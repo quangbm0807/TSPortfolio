@@ -89,7 +89,6 @@ const menuItemVariants = {
 export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const [currentLang, setCurrentLang] = useState('en');
     const activeSection = useScrollSpy(navItems.map(item => item.id), 100);
     const scrollTo = useScrollTo();
 
@@ -106,9 +105,7 @@ export const Navbar = () => {
         setIsOpen(false);
     };
 
-    const toggleLanguage = () => {
-        setCurrentLang(prev => prev === 'en' ? 'vi' : 'en');
-    };
+
 
     return (
         <motion.header

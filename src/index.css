@@ -27,6 +27,64 @@
   }
 }
 
+/* Custom Scrollbar Styles */
+/* Webkit (Chrome, Safari, Edge) */
+::-webkit-scrollbar {
+  width: 8px;
+  /* Thinner scrollbar */
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+  /* Transparent track */
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom,
+      rgb(99, 102, 241, 0.3),
+      rgb(168, 85, 247, 0.3));
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+  transition: all 0.3s ease;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: linear-gradient(to bottom,
+      rgba(99, 102, 241, 0.5),
+      rgba(168, 85, 247, 0.5));
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom,
+      rgb(99, 102, 241, 0.5),
+      rgb(168, 85, 247, 0.5));
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom,
+      rgba(99, 102, 241, 0.7),
+      rgba(168, 85, 247, 0.7));
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+/* Firefox */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: rgba(99, 102, 241, 0.3) transparent;
+}
+
+.dark * {
+  scrollbar-color: rgba(99, 102, 241, 0.5) transparent;
+}
+
+/* Animations */
 .animate-on-scroll {
   opacity: 0;
   transform: translateY(20px);
@@ -36,45 +94,4 @@
 .animate-on-scroll.is-visible {
   opacity: 1;
   transform: translateY(0);
-}
-
-/* Webkit browsers (Chrome, Safari, newer versions of Edge) */
-::-webkit-scrollbar {
-  width: 10px;
-}
-
-::-webkit-scrollbar-track {
-  background: #f1f1f1;
-  @apply dark:bg-gray-800;
-}
-
-::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 dark:bg-gray-600;
-  border-radius: 5px;
-}
-
-::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-500 dark:bg-gray-500;
-}
-
-/* Firefox */
-* {
-  scrollbar-width: thin;
-  scrollbar-color: #9CA3AF #F3F4F6;
-}
-
-.dark * {
-  scrollbar-color: #4B5563 #1F2937;
-}
-
-@keyframes twinkle {
-
-  0%,
-  100% {
-    opacity: 0.3;
-  }
-
-  50% {
-    opacity: 1;
-  }
 }
