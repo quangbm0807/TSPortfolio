@@ -41,7 +41,7 @@ export const AboutSection = () => {
     ];
 
     return (
-        <section id="about" className="py-20 bg-gray-50 dark:bg-gray-900">
+        <section id="about" className="py-20bg-gradient-creative from-primary-500 via-secondary-500 to-accent-500">
             <div className="container mx-auto px-4">
                 <motion.div
                     initial={{ opacity: 0 }}

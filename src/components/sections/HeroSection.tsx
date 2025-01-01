@@ -1,11 +1,11 @@
 import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail, Twitter } from 'lucide-react';
-
+import { Github, Linkedin, Mail, Youtube } from 'lucide-react';
+import avt from '../../assets/avt.jpg';
 export const HeroSection = () => {
     const socialLinks = [
         { Icon: Github, href: "https://github.com" },
         { Icon: Linkedin, href: "https://linkedin.com" },
-        { Icon: Twitter, href: "https://twitter.com" },
+        { Icon: Youtube, href: "https://twitter.com" },
         { Icon: Mail, href: "mailto:your@email.com" },
     ];
 
@@ -26,14 +26,19 @@ export const HeroSection = () => {
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ delay: 0.2 }}
-                        className="w-32 h-32 mx-auto mb-8 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-xl"
+                        className="w-40 h-40 mx-auto mb-8 rounded-full overflow-hidden border-4 border-white dark:border-gray-700 shadow-xl"
                     >
                         <img
-                            src="/api/placeholder/128/128"
+                            src={avt}
                             alt="Profile"
                             className="w-full h-full object-cover"
+                            style={{
+                                objectPosition: 'center center', // Tâm ảnh (mặc định)
+                                transform: 'scale(1.2)' // Phóng to ảnh 20%
+                            }}
                         />
                     </motion.div>
+
 
                     <motion.h1
                         initial={{ opacity: 0 }}
@@ -41,7 +46,7 @@ export const HeroSection = () => {
                         transition={{ delay: 0.3 }}
                         className="text-5xl md:text-7xl font-bold text-gray-900 dark:text-white mb-6"
                     >
-                        Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500">Your Name</span>
+                        Hi, I'm <span className="text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 to-purple-500">Bui Minh Quang</span>
                     </motion.h1>
 
                     <motion.p
@@ -50,7 +55,7 @@ export const HeroSection = () => {
                         transition={{ delay: 0.4 }}
                         className="text-xl md:text-2xl text-gray-600 dark:text-gray-300 mb-12"
                     >
-                        Crafting digital experiences with code & creativity
+                        Frontend Developer | Java Developer | UI/UX Enthusiast
                     </motion.p>
 
                     <motion.div
