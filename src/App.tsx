@@ -6,6 +6,7 @@ import { AboutSection } from './components/sections/AboutSection'
 import { SkillsSection } from './components/sections/SkillsSection'
 import { ProjectsSection } from './components/sections/ProjectsSection'
 import { ContactSection } from './components/sections/ContactSection'
+import { ScrollToTop } from './components/ScrollToTop'
 
 const App = () => {
   return (
@@ -18,6 +19,7 @@ const App = () => {
         <ExperienceSection />
         <ProjectsSection />
         <ContactSection />
+        <ScrollToTop />
       </main>
       <Footer />
     </div>
