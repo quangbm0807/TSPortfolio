@@ -66,3 +66,15 @@
 .dark * {
   scrollbar-color: #4B5563 #1F2937;
 }
+
+@keyframes twinkle {
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 1;
+  }
+}

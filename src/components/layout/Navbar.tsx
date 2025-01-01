@@ -1,9 +1,9 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X, Sun, Moon } from 'lucide-react';
-import { useTheme } from '../../context/ThemeContext';
+import { Menu, X } from 'lucide-react';
 import { useScrollSpy } from '../../hooks/useScrollSpy';
 import { useScrollTo } from '../../hooks/useScrollTo';
+import ThemeToggle from '../ThemeToggle';
 
 const navItems = [
     { id: 'home', label: 'Home' },
@@ -49,10 +49,47 @@ const NavItem = ({ label, isActive, onClick }: NavItemProps) => (
     </motion.li>
 );
 
+// Menu animation variants
+const menuVariants = {
+    closed: {
+        height: 0,
+        opacity: 0,
+        transition: {
+            duration: 0.3,
+            type: "tween",
+            ease: "easeInOut",
+            staggerChildren: 0.05,
+            staggerDirection: -1
+        }
+    },
+    open: {
+        height: "auto",
+        opacity: 1,
+        transition: {
+            duration: 0.3,
+            type: "tween",
+            ease: "easeInOut",
+            staggerChildren: 0.05,
+            delayChildren: 0.1
+        }
+    }
+};
+
+const menuItemVariants = {
+    closed: {
+        x: -20,
+        opacity: 0
+    },
+    open: {
+        x: 0,
+        opacity: 1
+    }
+};
+
 export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
-    const { theme, toggleTheme } = useTheme();
+    const [currentLang, setCurrentLang] = useState('en');
     const activeSection = useScrollSpy(navItems.map(item => item.id), 100);
     const scrollTo = useScrollTo();
 
@@ -67,6 +104,10 @@ export const Navbar = () => {
     const handleNavClick = (id: string) => {
         scrollTo(id);
         setIsOpen(false);
+    };
+
+    const toggleLanguage = () => {
+        setCurrentLang(prev => prev === 'en' ? 'vi' : 'en');
     };
 
     return (
@@ -94,85 +135,100 @@ export const Navbar = () => {
                 </motion.a>
 
                 {/* Desktop Navigation */}
-                <ul className="hidden md:flex items-center space-x-1">
-                    {navItems.map((item) => (
-                        <NavItem
-                            key={item.id}
-                            id={item.id}
-                            label={item.label}
-                            isActive={activeSection === item.id}
-                            onClick={() => handleNavClick(item.id)}
-                        />
-                    ))}
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={toggleTheme}
-                        className="ml-4 p-2 rounded-lg bg-gray-100 dark:bg-gray-800"
-                    >
-                        {theme === 'dark' ? (
-                            <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                        ) : (
-                            <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                        )}
-                    </motion.button>
-                </ul>
+                <div className="hidden md:flex items-center space-x-6">
+                    <ul className="flex items-center space-x-1">
+                        {navItems.map((item) => (
+                            <NavItem
+                                key={item.id}
+                                id={item.id}
+                                label={item.label}
+                                isActive={activeSection === item.id}
+                                onClick={() => handleNavClick(item.id)}
+                            />
+                        ))}
+                    </ul>
 
-                {/* Mobile Menu Button */}
-                <div className="flex items-center md:hidden">
-                    <motion.button
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                        onClick={toggleTheme}
-                        className="mr-2 p-2 rounded-lg bg-gray-100 dark:bg-gray-800"
-                    >
-                        {theme === 'dark' ? (
-                            <Sun className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                        ) : (
-                            <Moon className="w-5 h-5 text-gray-600 dark:text-gray-300" />
-                        )}
-                    </motion.button>
-                    <button
-                        onClick={() => setIsOpen(!isOpen)}
-                        className="p-2 text-gray-600 dark:text-gray-300"
-                    >
-                        {isOpen ? (
-                            <X className="w-6 h-6" />
-                        ) : (
-                            <Menu className="w-6 h-6" />
-                        )}
-                    </button>
+                    {/* Controls Group */}
+                    <div className="flex items-center space-x-4">
+                        {/* <LanguageToggle
+                            currentLang={currentLang}
+                            onToggle={toggleLanguage}
+                        /> */}
+                        <ThemeToggle />
+                    </div>
                 </div>
 
-                {/* Mobile Navigation */}
+                {/* Mobile Controls */}
+                <div className="flex items-center space-x-4 md:hidden">
+                    {/* <LanguageToggle
+                        currentLang={currentLang}
+                        onToggle={toggleLanguage}
+                    /> */}
+                    <ThemeToggle />
+                    <motion.button
+                        whileHover={{ scale: 1.1 }}
+                        whileTap={{ scale: 0.9 }}
+                        onClick={() => setIsOpen(!isOpen)}
+                        className="p-2 rounded-lg bg-gray-100 dark:bg-gray-800 text-gray-600 dark:text-gray-300"
+                    >
+                        <AnimatePresence mode="wait">
+                            <motion.div
+                                key={isOpen ? 'close' : 'open'}
+                                initial={{ rotate: -90, opacity: 0 }}
+                                animate={{ rotate: 0, opacity: 1 }}
+                                exit={{ rotate: 90, opacity: 0 }}
+                                transition={{ duration: 0.2 }}
+                            >
+                                {isOpen ? (
+                                    <X className="w-6 h-6" />
+                                ) : (
+                                    <Menu className="w-6 h-6" />
+                                )}
+                            </motion.div>
+                        </AnimatePresence>
+                    </motion.button>
+                </div>
+
+                {/* Mobile Navigation Menu */}
                 <AnimatePresence>
                     {isOpen && (
                         <motion.div
-                            initial={{ opacity: 0, y: -20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            exit={{ opacity: 0, y: -20 }}
-                            className="absolute top-16 left-0 right-0 bg-white dark:bg-gray-900 shadow-lg md:hidden"
+                            variants={menuVariants}
+                            initial="closed"
+                            animate="open"
+                            exit="closed"
+                            className="absolute top-16 left-0 right-0 bg-white dark:bg-gray-900 shadow-lg md:hidden
+                                     overflow-hidden"
                         >
-                            <ul className="py-2">
+                            <motion.ul
+                                className="py-2"
+                                variants={menuVariants}
+                            >
                                 {navItems.map((item) => (
                                     <motion.li
                                         key={item.id}
-                                        initial={{ opacity: 0, x: -20 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        exit={{ opacity: 0, x: -20 }}
+                                        variants={menuItemVariants}
+                                        className="border-b border-gray-100 dark:border-gray-800 last:border-none"
                                     >
                                         <button
                                             onClick={() => handleNavClick(item.id)}
-                                            className={`w-full px-4 py-3 text-left ${activeSection === item.id
-                                                ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20'
-                                                : 'text-gray-600 dark:text-gray-300'
+                                            className={`w-full px-6 py-4 text-left flex items-center space-x-4
+                                                      transition-colors duration-200 ${activeSection === item.id
+                                                    ? 'text-indigo-600 dark:text-indigo-400 bg-indigo-50 dark:bg-indigo-900/20'
+                                                    : 'text-gray-600 dark:text-gray-300'
                                                 }`}
                                         >
-                                            {item.label}
+                                            <span>{item.label}</span>
+                                            {activeSection === item.id && (
+                                                <motion.div
+                                                    layoutId="activeIndicator"
+                                                    className="w-1.5 h-1.5 rounded-full bg-indigo-600 dark:bg-indigo-400"
+                                                />
+                                            )}
                                         </button>
                                     </motion.li>
                                 ))}
-                            </ul>
+                            </motion.ul>
                         </motion.div>
                     )}
                 </AnimatePresence>

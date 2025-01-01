@@ -20,23 +20,23 @@ export const AboutSection = () => {
     const features = [
         {
             Icon: Rocket,
-            title: "Fast Learner",
-            description: "Quick to grasp new technologies and adapt to changing requirements."
+            title: "Quick Learner",
+            description: "Achieved top outstanding student status multiple terms, demonstrating ability to grasp new concepts quickly."
         },
         {
             Icon: Heart,
-            title: "Passionate",
-            description: "Deeply passionate about creating elegant solutions to complex problems."
+            title: "Passionate Developer",
+            description: "Dedicated to creating efficient and user-friendly applications with modern technologies."
         },
         {
             Icon: CloudLightning,
-            title: "Efficient",
-            description: "Focus on writing clean, efficient, and maintainable code."
+            title: "Full Stack Capable",
+            description: "Experienced in both frontend and backend development with React, Java, and Spring Boot."
         },
         {
             Icon: Star,
-            title: "Detail-Oriented",
-            description: "Strong attention to detail and commitment to quality."
+            title: "Achievement Oriented",
+            description: "Maintained a 9.2/10 GPA while working on multiple real-world projects."
         }
     ];
 
@@ -61,14 +61,10 @@ export const AboutSection = () => {
                                 About Me
                             </h2>
                             <p className="text-lg text-gray-600 dark:text-gray-300">
-                                Hello! I'm a passionate full-stack developer with 5+ years of experience
-                                in building web applications. I specialize in React, Node.js, and
-                                modern web technologies.
+                                Hello! I'm a passionate Frontend Developer with strong foundation in Java development. Currently pursuing Software Development and Mechatronics Engineering at FPT Polytechnic College and Ton Duc Thang University.
                             </p>
                             <p className="text-lg text-gray-600 dark:text-gray-300">
-                                My journey in tech started when I built my first website at 15.
-                                Since then, I've worked with various technologies and frameworks,
-                                always staying up-to-date with the latest industry trends.
+                                I specialize in building responsive web applications using React and TypeScript, with experience in both frontend and backend development. My goal is to create elegant solutions that provide excellent user experiences.
                             </p>
                             <div className="pt-4">
                                 <a
