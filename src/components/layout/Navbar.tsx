@@ -21,7 +21,7 @@ interface NavItemProps {
     onClick: () => void;
 }
 
-const NavItem = ({ id, label, isActive, onClick }: NavItemProps) => (
+const NavItem = ({ label, isActive, onClick }: NavItemProps) => (
     <motion.li
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
