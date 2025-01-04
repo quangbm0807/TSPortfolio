@@ -7,10 +7,12 @@ import { SkillsSection } from './components/sections/SkillsSection'
 import { ProjectsSection } from './components/sections/ProjectsSection'
 import { ContactSection } from './components/sections/ContactSection'
 import { ScrollToTop } from './components/ScrollToTop'
+import GalaxyBackground from './components/GalaxyBackground'
 
 const App = () => {
   return (
-    <div className="min-h-screen transition-colors ">
+    <div className="min-h-screen transition-colors">
+      <GalaxyBackground />
       <Navbar />
       <main>
         <HeroSection />
