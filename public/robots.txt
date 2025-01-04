@@ -1,0 +1,11 @@
+User-agent: *
+Allow: /
+
+# Thời gian chờ giữa các lần crawl
+Crawl-delay: 10
+
+# Sitemap
+Sitemap: https://bminhquang.name.vn/sitemap.xml
+
+# Host chính
+Host: https://bminhquang.name.vn
