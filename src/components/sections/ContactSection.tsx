@@ -20,7 +20,7 @@ export const ContactSection = () => {
     };
 
     return (
-        <section id="contact" className="py-20 bg-white dark:bg-gray-900">
+        <section id="contact" className="py-20 relative overflow-hidden">
             <div className="container mx-auto px-4">
                 <motion.div
                     initial={{ opacity: 0 }}

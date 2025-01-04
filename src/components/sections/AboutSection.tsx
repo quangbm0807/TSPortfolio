@@ -41,7 +41,7 @@ export const AboutSection = () => {
     ];
 
     return (
-        <section id="about" className="py-20bg-gradient-creative from-primary-500 via-secondary-500 to-accent-500">
+        <section id="about" className="py-20 relative overflow-hidden">
             <div className="container mx-auto px-4">
                 <motion.div
                     initial={{ opacity: 0 }}
