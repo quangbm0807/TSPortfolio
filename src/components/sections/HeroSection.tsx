@@ -63,66 +63,14 @@ const SocialButton: React.FC<SocialButtonProps> = ({ Icon, href, label }) => {
     );
 };
 
-const Star = ({ x, y }: { x: number; y: number }) => {
-    const size = Math.random() * 3 + 1;
-    const duration = Math.random() * 3 + 2;
 
-    return (
-        <motion.div
-            className="absolute rounded-full"
-            style={{
-                left: `${x}%`,
-                top: `${y}%`,
-                width: `${size}px`,
-                height: `${size}px`,
-                background: `rgba(255, 255, 255, ${Math.random() * 0.3 + 0.1})`
-            }}
-            animate={{
-                y: [0, -15, 0],
-                opacity: [0.2, 0.8, 0.2],
-                scale: [1, 1.5, 1],
-            }}
-            transition={{
-                duration,
-                repeat: Infinity,
-                ease: "easeInOut"
-            }}
-        />
-    );
-};
 
-const ShootingStar = () => (
-    <motion.div
-        className="absolute w-1 h-1 bg-white"
-        initial={{ x: "-100%", y: "0%", opacity: 0 }}
-        animate={{
-            x: "200%",
-            y: "100%",
-            opacity: [0, 1, 0],
-        }}
-        transition={{
-            duration: 2,
-            repeat: Infinity,
-            repeatDelay: Math.random() * 10 + 5
-        }}
-        style={{
-            left: `${Math.random() * 100}%`,
-            top: `${Math.random() * 50}%`,
-        }}
-    />
-);
 
 export const HeroSection = () => {
     const [mounted, setMounted] = useState(false);
-
     useEffect(() => {
         setMounted(true);
     }, []);
-
-    const stars = Array.from({ length: 100 }, () => ({
-        x: Math.random() * 100,
-        y: Math.random() * 100
-    }));
 
     const containerVariants = {
         hidden: { opacity: 0 },
@@ -150,34 +98,7 @@ export const HeroSection = () => {
     if (!mounted) return null;
 
     return (
-        <section className="min-h-screen flex items-center justify-center relative overflow-hidden bg-background">
-            {/* Animated gradient background */}
-            <motion.div
-                className="absolute inset-0"
-                animate={{
-                    background: [
-                        "linear-gradient(45deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.05) 50%, rgba(var(--primary-rgb), 0.1) 100%)",
-                        "linear-gradient(45deg, rgba(var(--primary-rgb), 0.15) 0%, rgba(var(--primary-rgb), 0.05) 50%, rgba(var(--primary-rgb), 0.15) 100%)",
-                        "linear-gradient(45deg, rgba(var(--primary-rgb), 0.1) 0%, rgba(var(--primary-rgb), 0.05) 50%, rgba(var(--primary-rgb), 0.1) 100%)",
-                    ],
-                }}
-                transition={{
-                    duration: 5,
-                    repeat: Infinity,
-                    ease: "easeInOut"
-                }}
-            />
-
-            {/* Stars background */}
-            <div className="absolute inset-0">
-                {stars.map((pos, i) => (
-                    <Star key={i} x={pos.x} y={pos.y} />
-                ))}
-                {[1, 2, 3].map((i) => (
-                    <ShootingStar key={`shooting-${i}`} />
-                ))}
-            </div>
-
+        <section id="home" className="py-20 relative overflow-hidden">
             <div className="container relative z-10 px-4 py-32">
                 <motion.div
                     variants={containerVariants}
@@ -193,21 +114,41 @@ export const HeroSection = () => {
                     </motion.div>
 
                     <motion.div variants={itemVariants}>
-                        <h1 className="text-4xl md:text-6xl font-bold mb-4">
+                        <h1 className="text-4xl md:text-6xl font-bold mb-4 flex flex-wrap items-center justify-center">
                             Hi, I'm{" "}
-                            <motion.span
-                                className="inline-block text-transparent bg-clip-text bg-gradient-to-r from-primary to-primary/60"
-                                animate={{
-                                    backgroundPosition: ["0%", "100%", "0%"],
-                                }}
-                                transition={{
-                                    duration: 5,
-                                    repeat: Infinity,
-                                    ease: "easeInOut",
-                                }}
-                            >
-                                Bui Minh Quang
-                            </motion.span>
+                            <div className="relative h-[1.2em] w-full inline-flex justify-center ml-2">
+                                <motion.span
+                                    key="name"
+                                    initial={{ display: "block", opacity: 0, y: 20 }}
+                                    animate={{ opacity: [0, 1, 1, 0], y: [20, 0, 0, -20] }}
+                                    transition={{
+                                        duration: 3,
+                                        repeat: Infinity,
+                                        repeatDelay: 3,
+                                        ease: "easeInOut",
+                                        times: [0, 0.1, 0.9, 1]
+                                    }}
+                                    className="absolute inset-0 text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-blue-700 whitespace-nowrap"
+                                >
+                                    Bui Minh Quang
+                                </motion.span>
+                                <motion.span
+                                    key="role"
+                                    initial={{ display: "block", opacity: 0, y: 20 }}
+                                    animate={{ opacity: [0, 1, 1, 0], y: [20, 0, 0, -20] }}
+                                    transition={{
+                                        duration: 3,
+                                        repeat: Infinity,
+                                        repeatDelay: 3,
+                                        delay: 3,
+                                        ease: "easeInOut",
+                                        times: [0, 0.1, 0.9, 1]
+                                    }}
+                                    className="absolute inset-0 text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-purple-700 whitespace-nowrap"
+                                >
+                                    Fullstack Developer
+                                </motion.span>
+                            </div>
                         </h1>
 
                         <motion.div
@@ -245,7 +186,7 @@ export const HeroSection = () => {
                             variants={itemVariants}
                             className="flex justify-center space-x-4"
                         >
-                            {socialLinks.map((link, index) => (
+                            {socialLinks?.map((link, index) => (
                                 <motion.div
                                     key={link.href}
                                     initial={{ opacity: 0, y: 20 }}
