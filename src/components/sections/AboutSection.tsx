@@ -4,7 +4,7 @@ import { Rocket, Heart, Star, CloudLightning } from 'lucide-react';
 const FeatureCard = ({ Icon, title, description }: { Icon: any, title: string, description: string }) => (
     <motion.div
         whileHover={{ y: -5 }}
-        className="p-6 bg-white dark:bg-gray-800 rounded-xl shadow-lg"
+        className="p-6 bg-white/80 dark:bg-gray-800/80 backdrop-blur-sm rounded-xl shadow-lg"
     >
         <div className="flex items-center mb-4">
             <Icon className="w-6 h-6 text-indigo-500 mr-3" />
@@ -42,7 +42,7 @@ export const AboutSection = () => {
 
     return (
         <section id="about" className="py-20 relative overflow-hidden">
-            <div className="container mx-auto px-4">
+            <div className="container mx-auto px-4 " >
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
