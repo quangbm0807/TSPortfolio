@@ -103,7 +103,7 @@ const SkillCard = ({ skill }: { skill: Skill }) => (
 
 export const SkillsSection = () => {
     return (
-        <section id="skills" className="py-20 bg-gray-50 dark:bg-gray-900">
+        <section id="skills" className="py-20 relative overflow-hidden">
             <div className="container mx-auto px-4">
                 <motion.div
                     initial={{ opacity: 0 }}

@@ -47,7 +47,7 @@ const experiences: Experience[] = [
 
 export const ExperienceSection = () => {
     return (
-        <section id='experience' className="py-20 bg-white dark:bg-gray-900">
+        <section id="experience" className="py-20 relative overflow-hidden">
             <div className="container mx-auto px-4">
                 <motion.div
                     initial={{ opacity: 0 }}
