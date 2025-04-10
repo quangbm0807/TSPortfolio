@@ -23,49 +23,25 @@ const skills: Skill[] = [
         name: 'Frontend Development',
         icon: <Layout className="w-8 h-8 text-indigo-500" />,
         description: 'Building responsive and interactive user interfaces with modern frameworks',
-        tags: ['React', 'Vue.js', 'TypeScript', 'Next.js', 'Tailwind CSS']
+        tags: ['ReactJS', 'AngularJS', 'TypeScript', 'Ant Design', 'Axios']
     },
     {
         name: 'Backend Development',
         icon: <Server className="w-8 h-8 text-blue-500" />,
         description: 'Creating scalable server-side applications and APIs',
-        tags: ['Node.js', 'Python', 'Java', 'Express', 'Django']
+        tags: ['Java', 'Spring Boot', 'Spring MVC', 'RESTful APIs']
     },
     {
         name: 'Database',
         icon: <Database className="w-8 h-8 text-emerald-500" />,
-        description: 'Designing and managing both SQL and NoSQL databases',
-        tags: ['PostgreSQL', 'MongoDB', 'Redis', 'MySQL']
-    },
-    {
-        name: 'DevOps & Cloud',
-        icon: <Cloud className="w-8 h-8 text-cyan-500" />,
-        description: 'Implementing CI/CD pipelines and cloud infrastructure',
-        tags: ['Docker', 'AWS', 'CI/CD', 'Kubernetes']
-    },
-    {
-        name: 'Version Control',
-        icon: <GitBranch className="w-8 h-8 text-orange-500" />,
-        description: 'Managing code versions and collaborating with teams',
-        tags: ['Git', 'GitHub', 'GitLab', 'Bitbucket']
-    },
-    {
-        name: 'Web Technologies',
-        icon: <Globe className="w-8 h-8 text-purple-500" />,
-        description: 'Implementing modern web standards and best practices',
-        tags: ['HTML5', 'CSS3', 'JavaScript', 'WebSockets', 'REST']
+        description: 'Working with various database systems for data storage and management',
+        tags: ['MySQL', 'SQL Server', 'PostgreSQL', 'JPA', 'ORM']
     },
     {
         name: 'Development Tools',
         icon: <Terminal className="w-8 h-8 text-red-500" />,
         description: 'Using professional development tools and environments',
-        tags: ['VS Code', 'Docker', 'Postman', 'npm/yarn']
-    },
-    {
-        name: 'UI/UX Design',
-        icon: <Palette className="w-8 h-8 text-pink-500" />,
-        description: 'Creating intuitive and aesthetically pleasing interfaces',
-        tags: ['Figma', 'Adobe XD', 'Responsive Design', 'Design Systems']
+        tags: ['VSCode', 'JetBrains', 'XAMPP', 'Eclipse', 'Git', 'Postman']
     }
 ];
 

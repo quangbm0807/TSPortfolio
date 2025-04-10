@@ -61,10 +61,10 @@ export const AboutSection = () => {
                                 About Me
                             </h2>
                             <p className="text-lg text-gray-600 dark:text-gray-300">
-                                Hello! I'm a passionate Frontend Developer with strong foundation in Java development. Currently pursuing Software Development and Mechatronics Engineering at FPT Polytechnic College and Ton Duc Thang University.
+                                Hello! I'm a Fullstack Developer with a strong foundation in Java and React development. Currently studying Software Development at FPT Polytechnic College and Mechatronics Engineering at Ton Duc Thang University.
                             </p>
                             <p className="text-lg text-gray-600 dark:text-gray-300">
-                                I specialize in building responsive web applications using React and TypeScript, with experience in both frontend and backend development. My goal is to create elegant solutions that provide excellent user experiences.
+                                I specialize in building responsive web applications using React and developing backend services with Java/Spring Boot. I'm passionate about creating elegant solutions that provide excellent user experiences with a GPA of 9.2/10 and recognition as a top outstanding student.
                             </p>
                             <div className="pt-4">
                                 <a
