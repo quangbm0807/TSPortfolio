@@ -3,10 +3,6 @@ import {
     Database,
     Layout,
     Terminal,
-    GitBranch,
-    Cloud,
-    Palette,
-    Globe,
     Server,
 
 } from 'lucide-react';
