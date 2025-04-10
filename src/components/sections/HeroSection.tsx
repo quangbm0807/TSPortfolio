@@ -13,10 +13,9 @@ interface SocialLink {
 }
 
 const socialLinks: SocialLink[] = [
-    { Icon: Github, href: "https://github.com", label: "GitHub" },
-    { Icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-    { Icon: Youtube, href: "https://youtube.com", label: "YouTube" },
-    { Icon: Mail, href: "mailto:your@email.com", label: "Email" },
+    { Icon: Github, href: "https://github.com/quangbm0807", label: "GitHub" },
+    { Icon: Linkedin, href: "https://linkedin.com/in/your-linkedin", label: "LinkedIn" },
+    { Icon: Mail, href: "mailto:buiminhquang2002@gmail.com", label: "Email" },
 ];
 
 interface SocialButtonProps {
@@ -155,7 +154,7 @@ export const HeroSection = () => {
                             variants={itemVariants}
                             className="flex flex-wrap justify-center gap-2 mb-8"
                         >
-                            {["Frontend Developer", "Java Developer", "UI/UX Enthusiast"].map((badge, index) => (
+                            {["Fullstack Developer", "Java Developer", "React Developer"].map((badge, index) => (
                                 <motion.div
                                     key={badge}
                                     initial={{ opacity: 0, x: -20 }}
