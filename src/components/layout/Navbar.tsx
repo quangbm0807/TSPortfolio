@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { useScrollSpy } from '../../hooks/useScrollSpy';
 import ThemeToggle from '../ThemeToggle';
+import { useEnhancedScrollTo } from '../../hooks/useEnhancedScrollTo';
 
 const navItems = [
     { id: 'home', label: 'Home' },
@@ -11,6 +12,7 @@ const navItems = [
     { id: 'skills', label: 'Skills' },
     { id: 'experience', label: 'Experience' },
     { id: 'projects', label: 'Projects' },
+    { id: 'github', label: 'GitHub' },
     { id: 'contact', label: 'Contact' }
 ];
 
@@ -90,6 +92,7 @@ export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const activeSection = useScrollSpy(navItems.map(item => item.id), 100);
+    const scrollTo = useEnhancedScrollTo();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -99,28 +102,14 @@ export const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    // Cải thiện hàm scrollTo để xử lý đúng trên mobile
+    // Updated handler that uses our enhanced scroll hook
     const handleNavClick = useCallback((id: string) => {
-        // Đóng menu nếu đang mở
+        // Close mobile menu if open
         setIsOpen(false);
 
-        // Tính toán offset dựa trên chiều cao của navbar
-        const navbarHeight = 64; // 4rem or 64px
-
-        // Tìm phần tử cần scroll đến
-        const element = document.getElementById(id);
-        if (element) {
-            // Tính toán vị trí scroll với offset
-            const elementPosition = element.getBoundingClientRect().top;
-            const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
-
-            // Scroll đến vị trí đã tính với animation
-            window.scrollTo({
-                top: offsetPosition,
-                behavior: 'smooth'
-            });
-        }
-    }, []);
+        // Use enhanced scroll function
+        scrollTo(id);
+    }, [scrollTo]);
 
     return (
         <motion.header
