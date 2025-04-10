@@ -18,28 +18,29 @@ const featuredProjects = [
     {
         title: "Typing App",
         description: "This app measures typing speed, tracks typing history, and displays progress through visual charts based on typing records. I developed it independently using React and TypeScript, with a focus on performance and user experience.",
-        image: "/api/placeholder/800/600",
+        image: "/images/projects/typing.png",
         tech: ["React", "TypeScript", "Ant Design", "Recharts", "Confetti"],
         github: "https://github.com/quangbm0807/typing-app",
-        demo: "https://github.com/pages/typing-app",
+        demo: "https://typing.bminhquang.name.vn/",
         role: "Fullstack Developer",
         teamSize: "1"
     },
     {
         title: "Freelancer Platform",
         description: "The platform enables clients to find freelancers for various projects and allows freelancers to search for job opportunities. I was responsible for developing specific APIs, creating a realtime notification service with Stomp & SockJS, training a chatbot with DialogFlow, and building the frontend interface.",
-        image: "/api/placeholder/800/600",
+        image: "/images/projects/talenthub.png",
         tech: ["SpringBoot", "Restful APIs", "MySQL", "ReactJS", "DialogFlow", "Stomp", "SocketIO"],
         github: "https://github.com/quangbm0807/freelancer-platform",
+        demo: "https://talenthub.io.vn/",
         role: "Fullstack Developer",
         teamSize: "3"
     },
     {
         title: "Food Services",
         description: "Built with a Java backend and ReactJS frontend, the platform enables clients to find and order from various food service providers. My role focused on developing the frontend interface with ReactJS based on Figma mockups, implementing UI components, and making API calls.",
-        image: "/api/placeholder/800/600",
+        image: "/images/projects/foodservice.png",
         tech: ["ReactJS", "I18N", "Axios", "Antd"],
-        demo: "https://youtube.com/demo",
+        demo: "https://www.youtube.com/watch?v=qYOozlqbNu4",
         role: "Frontend Developer",
         teamSize: "3"
     }
@@ -49,7 +50,7 @@ const regularProjects: Project[] = [
     {
         title: "Weather App",
         description: "A simple weather app that uses the OpenWeatherMap API to show current weather and allows users to search for other locations.",
-        image: "/api/placeholder/800/600",
+        image: "/images/projects/weather.png",
         tech: ["React", "TypeScript", "Ant Design", "Axios"],
         github: "https://github.com/quangbm0807/weather-app",
         demo: "https://github.com/pages/weather-app",
@@ -59,9 +60,9 @@ const regularProjects: Project[] = [
     {
         title: "Restaurant Management",
         description: "Built with Java Swing for the frontend and SQL Server with JDBC for the backend, this platform provides full functionality for managing a restaurant.",
-        image: "/api/placeholder/800/600",
+        image: "/images/projects/restaurant.png",
         tech: ["Java Swing", "SQL Server", "JDBC"],
-        demo: "https://youtube.com/demo",
+        demo: "https://www.youtube.com/watch?v=2SjDQd0vFAg&t=10s",
         role: "Fullstack Developer",
         teamSize: "6"
     }
