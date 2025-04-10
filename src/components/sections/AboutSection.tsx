@@ -87,7 +87,7 @@ export const AboutSection = () => {
                         >
                             <div className="aspect-square rounded-2xl overflow-hidden shadow-xl">
                                 <img
-                                    src="/api/placeholder/600/600"
+                                    src="/images/profile/avatar3.jpg"
                                     alt="About me"
                                     className="w-full h-full object-cover"
                                 />

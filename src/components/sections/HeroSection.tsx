@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { Github, Linkedin, Mail, LucideIcon } from 'lucide-react';
 import { Button } from "@/components/ui/button";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from 'react';
@@ -106,10 +105,11 @@ export const HeroSection = () => {
                     className="max-w-4xl mx-auto text-center"
                 >
                     <motion.div variants={itemVariants} className="mb-8">
-                        <Avatar className="w-32 h-32 mx-auto border-4 border-background shadow-xl">
-                            <AvatarImage src="/api/placeholder/400/400" alt="Profile" />
-                            <AvatarFallback>BQ</AvatarFallback>
-                        </Avatar>
+                        <div className="w-40 h-40 mx-auto border-4 border-background shadow-xl rounded-full overflow-hidden">
+                            <a href="/images/profile/avatar.jpg" target="_blank" rel="noopener noreferrer">
+                                <img src="/images/profile/avatar.jpg" alt="Bui Minh Quang" className="w-full h-full object-cover" />
+                            </a>
+                        </div>
                     </motion.div>
 
                     <motion.div variants={itemVariants}>
