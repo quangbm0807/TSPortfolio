@@ -13,37 +13,43 @@ interface Project {
 
 const projects: Project[] = [
     {
-        title: "E-commerce Platform",
-        description: "A full-stack e-commerce platform with real-time inventory management, payment processing, and admin dashboard.",
+        title: "Typing App",
+        description: "This app measures typing speed, tracks typing history, and displays progress through visual charts based on typing records.",
         image: "/api/placeholder/800/600",
-        tech: ["React", "Node.js", "MongoDB", "Stripe", "Redis"],
-        github: "https://github.com",
-        demo: "https://demo.com",
+        tech: ["React", "TypeScript", "Ant Design", "Recharts", "Confetti"],
+        github: "https://github.com/your-github/typing-app",
+        demo: "https://github.com/pages/typing-app",
         featured: true
     },
     {
-        title: "Task Management App",
-        description: "A collaborative task management application with real-time updates, file sharing, and team chat functionality.",
+        title: "Weather App",
+        description: "A simple weather app that uses the OpenWeatherMap API to show current weather and allows users to search for other locations.",
         image: "/api/placeholder/800/600",
-        tech: ["Vue.js", "Firebase", "Tailwind CSS", "WebSocket"],
-        github: "https://github.com",
-        demo: "https://demo.com",
+        tech: ["React", "TypeScript", "Ant Design", "Axios"],
+        github: "https://github.com/your-github/weather-app",
+        demo: "https://github.com/pages/weather-app"
+    },
+    {
+        title: "Freelancer Platform",
+        description: "The platform enables clients to find freelancers for various projects and allows freelancers to search for job opportunities.",
+        image: "/api/placeholder/800/600",
+        tech: ["SpringBoot", "Restful APIs", "ORM", "JPA", "MySQL", "ReactJS", "DialogFlow", "Axios", "Stomp", "SocketIO"],
+        github: "https://github.com/your-github/freelancer-platform",
         featured: true
     },
     {
-        title: "AI-Powered Analytics",
-        description: "Data analytics platform using machine learning to provide insights and predictions for business metrics.",
+        title: "Food Services",
+        description: "Built with a Java backend and ReactJS frontend, the platform enables clients to find and order from various food service providers.",
         image: "/api/placeholder/800/600",
-        tech: ["Python", "TensorFlow", "React", "FastAPI"],
-        github: "https://github.com",
-        featured: true
+        tech: ["ReactJS", "I18N", "Axios", "Antd"],
+        demo: "https://youtube.com/food-services-demo"
     },
     {
-        title: "Social Media Dashboard",
-        description: "Comprehensive dashboard for managing and analyzing social media presence across multiple platforms.",
+        title: "Restaurant Management",
+        description: "Built with Java Swing for the frontend and SQL Server with JDBC for the backend, this platform provides full functionality for managing a restaurant.",
         image: "/api/placeholder/800/600",
-        tech: ["Next.js", "GraphQL", "PostgreSQL", "Chart.js"],
-        demo: "https://demo.com"
+        tech: ["Java Swing", "SQL Server", "JDBC"],
+        demo: "https://youtube.com/restaurant-management-demo"
     }
 ];
 

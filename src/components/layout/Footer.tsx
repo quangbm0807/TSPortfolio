@@ -3,10 +3,9 @@ import { motion } from 'framer-motion';
 
 export const Footer = () => {
     const socialLinks = [
-        { Icon: Github, href: "https://github.com", label: "GitHub" },
-        { Icon: Linkedin, href: "https://linkedin.com", label: "LinkedIn" },
-        { Icon: Twitter, href: "https://twitter.com", label: "Twitter" },
-        { Icon: Mail, href: "mailto:your@email.com", label: "Email" },
+        { Icon: Github, href: "https://github.com/quangbm0807", label: "GitHub" },
+        { Icon: Linkedin, href: "https://linkedin.com/in/your-linkedin", label: "LinkedIn" },
+        { Icon: Mail, href: "mailto:buiminhquang2002@gmail.com", label: "Email" },
     ];
 
     const links = [
@@ -70,10 +69,10 @@ export const Footer = () => {
             {/* Bottom Bar */}
             <div className="border-t border-gray-200 dark:border-gray-800">
                 <div className="container mx-auto px-4 py-6">
+                    <p className="text-gray-600 dark:text-gray-400 text-sm text-center md:text-left">
+                        © {new Date().getFullYear()} Bui Minh Quang. All rights reserved.
+                    </p>
                     <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                        <p className="text-gray-600 dark:text-gray-400 text-sm">
-                            © {new Date().getFullYear()} Your Name. All rights reserved.
-                        </p>
                         <div className="flex space-x-6">
                             <a
                                 href="#"
@@ -97,6 +96,7 @@ export const Footer = () => {
                     </div>
                 </div>
             </div>
+
         </footer>
     );
 };

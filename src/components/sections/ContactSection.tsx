@@ -140,17 +140,17 @@ export const ContactSection = () => {
                             <ContactInfo
                                 Icon={Mail}
                                 title="Email"
-                                content="contact@example.com"
+                                content="buiminhquang2002@gmail.com"
                             />
                             <ContactInfo
                                 Icon={Phone}
                                 title="Phone"
-                                content="+1 (555) 123-4567"
+                                content="0342 8686 39"
                             />
                             <ContactInfo
                                 Icon={MapPin}
                                 title="Location"
-                                content="San Francisco, CA, United States"
+                                content="Go Vap, Ho Chi Minh City"
                             />
 
                             {/* Map or Additional Content */}

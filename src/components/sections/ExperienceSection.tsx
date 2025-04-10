@@ -11,37 +11,15 @@ interface Experience {
 
 const experiences: Experience[] = [
     {
-        title: "Senior Frontend Developer",
-        company: "Tech Corp Inc.",
-        period: "2022 - Present",
+        title: "Frontend Developer Intern",
+        company: "Metech Technology Co., Ltd.",
+        period: "08/2024 - Present",
         description: [
-            "Led the development of a next-generation SaaS platform",
-            "Improved application performance by 40%",
-            "Mentored junior developers and conducted code reviews"
+            "Built user interfaces with ReactJS, ensuring responsiveness and smooth user experience",
+            "Optimized performance and improved load times by refining code logic",
+            "Integrated APIs to manage and manipulate data between front-end and back-end"
         ],
-        technologies: ["React", "TypeScript", "Next.js", "GraphQL"]
-    },
-    {
-        title: "Full Stack Developer",
-        company: "Innovation Labs",
-        period: "2020 - 2022",
-        description: [
-            "Developed and maintained multiple client applications",
-            "Implemented CI/CD pipelines reducing deployment time by 60%",
-            "Collaborated with design team to improve UI/UX"
-        ],
-        technologies: ["Vue.js", "Node.js", "PostgreSQL", "Docker"]
-    },
-    {
-        title: "Software Engineer",
-        company: "StartUp Co",
-        period: "2018 - 2020",
-        description: [
-            "Built RESTful APIs for mobile applications",
-            "Implemented real-time features using WebSocket",
-            "Optimized database queries improving response time"
-        ],
-        technologies: ["Python", "Django", "React Native", "Redis"]
+        technologies: ["React", "TypeScript", "API Integration", "Performance Optimization"]
     }
 ];
 
