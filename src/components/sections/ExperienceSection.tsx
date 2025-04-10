@@ -11,7 +11,7 @@ interface Experience {
 
 const experiences: Experience[] = [
     {
-        title: "Frontend Developer Intern",
+        title: "Frontend Developer",
         company: "Metech Technology Co., Ltd.",
         period: "08/2024 - Present",
         description: [
@@ -19,7 +19,7 @@ const experiences: Experience[] = [
             "Optimized performance and improved load times by refining code logic",
             "Integrated APIs to manage and manipulate data between front-end and back-end"
         ],
-        technologies: ["React", "TypeScript", "API Integration", "Performance Optimization"]
+        technologies: ["React", "TypeScript", "API Integration", "Performance Optimization", "Responsive Design", "Data Manipulation", "API Integration", "Websockets"]
     }
 ];
 
