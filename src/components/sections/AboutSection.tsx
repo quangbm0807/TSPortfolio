@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
 import { Rocket, Heart, Star, CloudLightning } from 'lucide-react';
+import { ResumeDownload } from '../ResumeDownload';
 
 const FeatureCard = ({ Icon, title, description }: { Icon: any, title: string, description: string }) => (
     <motion.div
@@ -66,13 +67,14 @@ export const AboutSection = () => {
                             <p className="text-lg text-gray-600 dark:text-gray-300">
                                 I specialize in building responsive web applications using React and developing backend services with Java/Spring Boot. I'm passionate about creating elegant solutions that provide excellent user experiences with a GPA of 9.2/10 and recognition as a top outstanding student.
                             </p>
-                            <div className="pt-4">
+                            <div className="pt-4 flex flex-wrap gap-4">
                                 <a
                                     href="#contact"
                                     className="inline-flex items-center px-6 py-3 bg-indigo-600 text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200"
                                 >
                                     Get in Touch
                                 </a>
+                                <ResumeDownload file="/resume.pdf" />
                             </div>
                         </motion.div>
 
