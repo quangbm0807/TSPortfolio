@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, X } from 'lucide-react';
 import { useScrollSpy } from '../../hooks/useScrollSpy';
-import { useScrollTo } from '../../hooks/useScrollTo';
 import ThemeToggle from '../ThemeToggle';
 
 const navItems = [
@@ -91,7 +90,6 @@ export const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [isScrolled, setIsScrolled] = useState(false);
     const activeSection = useScrollSpy(navItems.map(item => item.id), 100);
-    const scrollTo = useScrollTo();
 
     useEffect(() => {
         const handleScroll = () => {
@@ -101,12 +99,28 @@ export const Navbar = () => {
         return () => window.removeEventListener('scroll', handleScroll);
     }, []);
 
-    const handleNavClick = (id: string) => {
-        scrollTo(id);
+    // Cải thiện hàm scrollTo để xử lý đúng trên mobile
+    const handleNavClick = useCallback((id: string) => {
+        // Đóng menu nếu đang mở
         setIsOpen(false);
-    };
 
+        // Tính toán offset dựa trên chiều cao của navbar
+        const navbarHeight = 64; // 4rem or 64px
 
+        // Tìm phần tử cần scroll đến
+        const element = document.getElementById(id);
+        if (element) {
+            // Tính toán vị trí scroll với offset
+            const elementPosition = element.getBoundingClientRect().top;
+            const offsetPosition = elementPosition + window.pageYOffset - navbarHeight;
+
+            // Scroll đến vị trí đã tính với animation
+            window.scrollTo({
+                top: offsetPosition,
+                behavior: 'smooth'
+            });
+        }
+    }, []);
 
     return (
         <motion.header
@@ -147,20 +161,12 @@ export const Navbar = () => {
 
                     {/* Controls Group */}
                     <div className="flex items-center space-x-4">
-                        {/* <LanguageToggle
-                            currentLang={currentLang}
-                            onToggle={toggleLanguage}
-                        /> */}
                         <ThemeToggle />
                     </div>
                 </div>
 
                 {/* Mobile Controls */}
                 <div className="flex items-center space-x-4 md:hidden">
-                    {/* <LanguageToggle
-                        currentLang={currentLang}
-                        onToggle={toggleLanguage}
-                    /> */}
                     <ThemeToggle />
                     <motion.button
                         whileHover={{ scale: 1.1 }}

@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { useState, useEffect } from 'react';
+import { ImageModal } from '../ImageModal';
 
 interface SocialLink {
     Icon: LucideIcon;
@@ -61,11 +62,11 @@ const SocialButton: React.FC<SocialButtonProps> = ({ Icon, href, label }) => {
     );
 };
 
-
-
-
 export const HeroSection = () => {
     const [mounted, setMounted] = useState(false);
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [profileImage] = useState("/images/profile/avatar.jpg");
+
     useEffect(() => {
         setMounted(true);
     }, []);
@@ -93,6 +94,10 @@ export const HeroSection = () => {
         }
     };
 
+    const handleImageClick = () => {
+        setIsModalOpen(true);
+    };
+
     if (!mounted) return null;
 
     return (
@@ -105,10 +110,15 @@ export const HeroSection = () => {
                     className="max-w-4xl mx-auto text-center"
                 >
                     <motion.div variants={itemVariants} className="mb-8">
-                        <div className="w-40 h-40 mx-auto border-4 border-background shadow-xl rounded-full overflow-hidden">
-                            <a href="/images/profile/avatar.jpg" target="_blank" rel="noopener noreferrer">
-                                <img src="/images/profile/avatar.jpg" alt="Bui Minh Quang" className="w-full h-full object-cover" />
-                            </a>
+                        <div className="w-40 h-40 mx-auto border-4 border-background shadow-xl rounded-full overflow-hidden cursor-pointer group">
+                            <motion.img
+                                src={profileImage}
+                                alt="Bui Minh Quang"
+                                className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                                onClick={handleImageClick}
+                                whileHover={{ scale: 1.1 }}
+                                whileTap={{ scale: 0.95 }}
+                            />
                         </div>
                     </motion.div>
 
@@ -199,6 +209,14 @@ export const HeroSection = () => {
                     </motion.div>
                 </motion.div>
             </div>
+
+            {/* Image Modal */}
+            <ImageModal
+                isOpen={isModalOpen}
+                imageUrl={profileImage}
+                altText="Bui Minh Quang"
+                onClose={() => setIsModalOpen(false)}
+            />
         </section>
     );
 };
