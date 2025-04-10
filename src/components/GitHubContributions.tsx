@@ -1,7 +1,6 @@
-// src/components/GitHubContributions.tsx
 import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Github, Calendar, Activity } from 'lucide-react';
+import { Github, Calendar, Activity, AlertCircle } from 'lucide-react';
 
 interface ContributionDay {
     date: string;
@@ -42,17 +41,90 @@ const ContributionBlock = ({ count, date, level }: ContributionBlockProps) => {
 export default function GitHubContributions() {
     const [contributionData, setContributionData] = useState<ContributionData | null>(null);
     const [isLoading, setIsLoading] = useState(true);
-    const [error] = useState<string | null>(null);
+    const [error, setError] = useState<string | null>(null);
+    const username = 'quangbm0807';
 
     useEffect(() => {
-        // This would normally fetch from GitHub API, but we'll use a simulation for the demo
-        simulateContributionData()
+        // Fetch the actual GitHub contribution data
+        fetchGitHubContributions(username)
             .then(data => {
                 setContributionData(data);
                 setIsLoading(false);
             })
-    }, []);
+            .catch(err => {
+                console.error('Error fetching GitHub contributions:', err);
+                setError('Could not load GitHub contributions data. Falling back to simulated data.');
 
+                // Fallback to simulated data if API call fails
+                simulateContributionData().then(data => {
+                    setContributionData(data);
+                    setIsLoading(false);
+                });
+            });
+    }, [username]);
+
+    // Fetch actual GitHub contributions using GitHub GraphQL API
+    const fetchGitHubContributions = async (username: string): Promise<ContributionData> => {
+        try {
+            // Chọn URL thích hợp dựa trên môi trường
+            const baseUrl = import.meta.env.DEV
+                ? 'http://localhost:3001'
+                : '';
+
+            const response = await fetch(`${baseUrl}/api/github-contributions?username=${username}`);
+
+            if (!response.ok) {
+                throw new Error(`Failed to fetch GitHub contributions: ${response.statusText}`);
+            }
+
+            const data = await response.json();
+            return transformGitHubData(data);
+        } catch (error) {
+            console.error('Error fetching GitHub contributions:', error);
+            throw error;
+        }
+    };
+
+    // Transform the GitHub API response into our application's format
+    const transformGitHubData = (apiData: any): ContributionData => {
+        // This assumes your API returns data in a specific format that needs transformation
+        // Adapt this function based on the actual response format from your API
+
+        const weeks: ContributionDay[][] = [];
+        let totalContributions = 0;
+
+        // Example transformation logic (adjust based on your actual API response)
+        if (apiData.data && apiData.data.user && apiData.data.user.contributionsCollection) {
+            totalContributions = apiData.data.user.contributionsCollection.contributionCalendar.totalContributions;
+
+            // Process the weeks data
+            const contributionWeeks = apiData.data.user.contributionsCollection.contributionCalendar.weeks;
+
+            for (const week of contributionWeeks) {
+                const days: ContributionDay[] = [];
+
+                for (const day of week.contributionDays) {
+                    days.push({
+                        date: day.date,
+                        count: day.contributionCount,
+                        level: day.contributionLevel === 'NONE' ? 0 :
+                            day.contributionLevel === 'FIRST_QUARTILE' ? 1 :
+                                day.contributionLevel === 'SECOND_QUARTILE' ? 2 :
+                                    day.contributionLevel === 'THIRD_QUARTILE' ? 3 : 4
+                    });
+                }
+
+                weeks.push(days);
+            }
+        }
+
+        return {
+            totalContributions,
+            weeks
+        };
+    };
+
+    // Fallback simulation function for when the API call fails
     const simulateContributionData = (): Promise<ContributionData> => {
         return new Promise((resolve) => {
             const now = new Date();
@@ -64,21 +136,16 @@ export default function GitHubContributions() {
             for (let i = 0; i < 53; i++) {
                 const days: ContributionDay[] = [];
                 for (let j = 0; j < 7; j++) {
-                    // Simulate more activity for certain periods visible in your contribution graph
+                    // Simulate more activity for certain periods
                     let level = 0;
 
                     // Create patterns similar to what we see in the image
-                    // Higher probability of contributions on Mondays, Wednesdays and Fridays
                     const isActiveDay = j === 0 || j === 2 || j === 4;
-
-                    // Create clusters of activity
                     const isActiveWeek = (i >= 10 && i <= 15) || (i >= 25 && i <= 30) || (i >= 40 && i <= 48);
 
                     if (isActiveWeek && isActiveDay) {
-                        // Higher chance of contribution during active periods
                         level = Math.floor(Math.random() * 4) + 1; // 1-4
                     } else if (Math.random() > 0.8) {
-                        // Small chance of random contributions elsewhere
                         level = Math.floor(Math.random() * 3) + 1; // 1-3
                     }
 
@@ -94,8 +161,8 @@ export default function GitHubContributions() {
                 weeks.push(days);
             }
 
-            // Simulate total contribution count
-            const totalContributions = 5718;
+            // Simulate total contribution count (with a note that this is simulated)
+            const totalContributions = 512;
 
             resolve({
                 totalContributions,
@@ -126,14 +193,6 @@ export default function GitHubContributions() {
         );
     }
 
-    if (error) {
-        return (
-            <div className="text-center py-10 text-red-500">
-                {error}
-            </div>
-        );
-    }
-
     return (
         <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -159,6 +218,13 @@ export default function GitHubContributions() {
                     </span>
                 </div>
             </div>
+
+            {error && (
+                <div className="mb-4 p-3 bg-yellow-100 dark:bg-yellow-900/30 text-yellow-800 dark:text-yellow-200 rounded flex items-start">
+                    <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0 mt-0.5" />
+                    <p className="text-sm">{error}</p>
+                </div>
+            )}
 
             <div className="overflow-x-auto">
                 <div className="min-w-max">
@@ -219,7 +285,7 @@ export default function GitHubContributions() {
                 <motion.a
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
-                    href="https://github.com/quangbm0807"
+                    href={`https://github.com/${username}`}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="inline-flex items-center px-4 py-2 bg-gray-900 dark:bg-gray-700 text-white rounded-lg hover:bg-gray-800 dark:hover:bg-gray-600 transition-colors duration-200"
