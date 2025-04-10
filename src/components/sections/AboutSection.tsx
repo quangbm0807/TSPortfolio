@@ -1,6 +1,13 @@
 import { motion } from 'framer-motion';
 import { Rocket, Heart, Star, CloudLightning } from 'lucide-react';
 import { ResumeDownload } from '../ResumeDownload';
+import { ImageCarousel } from '../ImageCarousel';
+
+const profileImages = [
+    { url: "/images/profile/avatar3.jpg", alt: "Bui Minh Quang profile picture" },
+    { url: "/images/profile/avatar.jpg", alt: "Bui Minh Quang profile picture 2" },
+    { url: "/images/profile/avatar2.jpg", alt: "Bui Minh Quang profile picture 3" },
+];
 
 const FeatureCard = ({ Icon, title, description }: { Icon: any, title: string, description: string }) => (
     <motion.div
@@ -78,20 +85,14 @@ export const AboutSection = () => {
                             </div>
                         </motion.div>
 
-                        {/* Image */}
+                        {/* Image Carousel */}
                         <motion.div
                             initial={{ opacity: 0, x: 20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
                             className="relative"
                         >
-                            <div className="aspect-square rounded-2xl overflow-hidden shadow-xl">
-                                <img
-                                    src="/images/profile/avatar3.jpg"
-                                    alt="About me"
-                                    className="w-full h-full object-cover"
-                                />
-                            </div>
+                            <ImageCarousel images={profileImages} autoplaySpeed={6000} />
                         </motion.div>
                     </div>
 
