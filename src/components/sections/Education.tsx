@@ -21,7 +21,7 @@ const educationList: Education[] = [
     {
         institution: "FPT Polytechnic College",
         degree: "Software Development (Java)",
-        period: "08/2024 - Present",
+        period: "01/2023 - 05/2025",
         achievements: ["GPA: 9.2/10", "Top Outstanding Student in multiple terms"]
     },
     {
