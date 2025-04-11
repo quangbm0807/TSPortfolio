@@ -102,7 +102,7 @@ export const HeroSection = () => {
 
     return (
         <section id="home" className="py-20 relative overflow-hidden">
-            <div className="container relative z-10 px-4 py-32">
+            <div className="relative z-10 px-4 py-32">
                 <motion.div
                     variants={containerVariants}
                     initial="hidden"

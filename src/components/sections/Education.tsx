@@ -181,21 +181,23 @@ export const EducationSection = () => {
                                 ))}
                             </div>
 
-                            {/* Visual Element */}
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.9 }}
-                                whileInView={{ opacity: 1, scale: 1 }}
-                                viewport={{ once: true }}
-                                className="mt-8 p-6 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl text-white"
-                            >
-                                <h4 className="font-bold text-xl mb-2">Continuous Learning</h4>
-                                <p className="opacity-90">
-                                    Always expanding my skills through courses, workshops, and self-study to stay
-                                    current with the latest technologies and best practices in software development.
-                                </p>
-                            </motion.div>
+
                         </motion.div>
+
                     </div>
+                    {/* Visual Element */}
+                    <motion.div
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        className="mt-8 p-6 bg-gradient-to-r from-indigo-500 to-purple-500 rounded-xl text-white"
+                    >
+                        <h4 className="font-bold text-xl mb-2">Continuous Learning</h4>
+                        <p className="opacity-90">
+                            Always expanding my skills through courses, workshops, and self-study to stay
+                            current with the latest technologies and best practices in software development.
+                        </p>
+                    </motion.div>
                 </motion.div>
             </div>
         </section>
