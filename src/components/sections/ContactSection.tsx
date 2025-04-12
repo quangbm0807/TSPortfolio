@@ -328,7 +328,7 @@ export const ContactSection = () => {
                                 <div className="bg-gray-100 dark:bg-gray-800 rounded-xl h-64">
                                     <div className="w-full h-full rounded-xl overflow-hidden">
                                         <img
-                                            src="/images/location.png"
+                                            src="/images/logos/location.png"
                                             alt="Location map"
                                             className="w-full h-full object-cover"
                                         />
