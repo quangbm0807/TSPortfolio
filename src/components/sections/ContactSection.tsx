@@ -168,6 +168,20 @@ export const ContactSection = () => {
                             viewport={{ once: true }}
                             className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8"
                         >
+                            {submitStatus === 'success' && (
+                                <div className="mb-6 p-4 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-lg flex items-center">
+                                    <CheckCircle className="w-5 h-5 mr-2 flex-shrink-0" />
+                                    <p>{statusMessage}</p>
+                                </div>
+                            )}
+
+                            {submitStatus === 'error' && (
+                                <div className="mb-6 p-4 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-lg flex items-center">
+                                    <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0" />
+                                    <p>{statusMessage}</p>
+                                </div>
+                            )}
+
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
