@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 const ContactInfo = ({ Icon, title, content }: { Icon: any; title: string; content: string }) => (
     <div className="flex items-start space-x-4">
@@ -13,10 +14,127 @@ const ContactInfo = ({ Icon, title, content }: { Icon: any; title: string; conte
     </div>
 );
 
+interface FormData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    subject: string;
+    message: string;
+}
+
+interface FormErrors {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    subject?: string;
+    message?: string;
+}
+
 export const ContactSection = () => {
-    const handleSubmit = (e: React.FormEvent) => {
+    const [formData, setFormData] = useState<FormData>({
+        firstName: '',
+        lastName: '',
+        email: '',
+        subject: '',
+        message: ''
+    });
+
+    const [errors, setErrors] = useState<FormErrors>({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [statusMessage, setStatusMessage] = useState('');
+
+    const validateForm = (): boolean => {
+        const newErrors: FormErrors = {};
+
+        if (!formData.firstName.trim()) {
+            newErrors.firstName = 'First name is required';
+        }
+
+        if (!formData.lastName.trim()) {
+            newErrors.lastName = 'Last name is required';
+        }
+
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+
+        if (!formData.message.trim()) {
+            newErrors.message = 'Message is required';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+
+        // Clear error when user types
+        if (errors[name as keyof FormErrors]) {
+            setErrors(prev => ({ ...prev, [name]: undefined }));
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Add form submission logic here
+
+        if (!validateForm()) {
+            return;
+        }
+
+        setIsSubmitting(true);
+        setSubmitStatus('idle');
+
+        try {
+            // Determine the appropriate URL based on environment
+            const baseUrl = import.meta.env.DEV
+                ? 'http://localhost:3001'
+                : '';
+
+            const response = await fetch(`${baseUrl}/api/contact`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to send message');
+            }
+
+            setSubmitStatus('success');
+            setStatusMessage('Your message has been sent successfully! I will get back to you soon.');
+
+            // Reset form after successful submission
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                subject: '',
+                message: ''
+            });
+
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setSubmitStatus('error');
+            setStatusMessage(error instanceof Error ? error.message : 'An unexpected error occurred. Please try again later.');
+        } finally {
+            setIsSubmitting(false);
+
+            // Automatically clear success message after 5 seconds
+            if (submitStatus === 'success') {
+                setTimeout(() => {
+                    setSubmitStatus('idle');
+                }, 5000);
+            }
+        }
     };
 
     return (
@@ -50,45 +168,77 @@ export const ContactSection = () => {
                             viewport={{ once: true }}
                             className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8"
                         >
+                            {submitStatus === 'success' && (
+                                <div className="mb-6 p-4 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-lg flex items-center">
+                                    <CheckCircle className="w-5 h-5 mr-2 flex-shrink-0" />
+                                    <p>{statusMessage}</p>
+                                </div>
+                            )}
+
+                            {submitStatus === 'error' && (
+                                <div className="mb-6 p-4 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-lg flex items-center">
+                                    <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0" />
+                                    <p>{statusMessage}</p>
+                                </div>
+                            )}
+
                             <form onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            First Name
+                                            First Name*
                                         </label>
                                         <input
                                             type="text"
-                                            className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 dark:bg-gray-700 
-                             dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
-                             outline-none transition-all duration-200"
+                                            name="firstName"
+                                            value={formData.firstName}
+                                            onChange={handleChange}
+                                            className={`w-full px-4 py-2 rounded-lg border ${errors.firstName ? 'border-red-500 dark:border-red-400' : 'dark:border-gray-600'
+                                                } dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
+                                            outline-none transition-all duration-200`}
                                             placeholder="John"
                                         />
+                                        {errors.firstName && (
+                                            <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.firstName}</p>
+                                        )}
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Last Name
+                                            Last Name*
                                         </label>
                                         <input
                                             type="text"
-                                            className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 dark:bg-gray-700 
-                             dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
-                             outline-none transition-all duration-200"
+                                            name="lastName"
+                                            value={formData.lastName}
+                                            onChange={handleChange}
+                                            className={`w-full px-4 py-2 rounded-lg border ${errors.lastName ? 'border-red-500 dark:border-red-400' : 'dark:border-gray-600'
+                                                } dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
+                                            outline-none transition-all duration-200`}
                                             placeholder="Doe"
                                         />
+                                        {errors.lastName && (
+                                            <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.lastName}</p>
+                                        )}
                                     </div>
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Email
+                                        Email*
                                     </label>
                                     <input
                                         type="email"
-                                        className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 dark:bg-gray-700 
-                           dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
-                           outline-none transition-all duration-200"
+                                        name="email"
+                                        value={formData.email}
+                                        onChange={handleChange}
+                                        className={`w-full px-4 py-2 rounded-lg border ${errors.email ? 'border-red-500 dark:border-red-400' : 'dark:border-gray-600'
+                                            } dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
+                                        outline-none transition-all duration-200`}
                                         placeholder="john@example.com"
                                     />
+                                    {errors.email && (
+                                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.email}</p>
+                                    )}
                                 </div>
 
                                 <div>
@@ -97,35 +247,55 @@ export const ContactSection = () => {
                                     </label>
                                     <input
                                         type="text"
+                                        name="subject"
+                                        value={formData.subject}
+                                        onChange={handleChange}
                                         className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 dark:bg-gray-700 
-                           dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
-                           outline-none transition-all duration-200"
+                                        dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
+                                        outline-none transition-all duration-200"
                                         placeholder="Project Inquiry"
                                     />
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                        Message
+                                        Message*
                                     </label>
                                     <textarea
+                                        name="message"
+                                        value={formData.message}
+                                        onChange={handleChange}
                                         rows={4}
-                                        className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 dark:bg-gray-700 
-                           dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
-                           outline-none transition-all duration-200"
+                                        className={`w-full px-4 py-2 rounded-lg border ${errors.message ? 'border-red-500 dark:border-red-400' : 'dark:border-gray-600'
+                                            } dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
+                                        outline-none transition-all duration-200`}
                                         placeholder="Your message..."
                                     />
+                                    {errors.message && (
+                                        <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.message}</p>
+                                    )}
                                 </div>
 
                                 <motion.button
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
                                     type="submit"
+                                    disabled={isSubmitting}
                                     className="w-full inline-flex items-center justify-center px-6 py-3 bg-indigo-600 
-                         text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200"
+                                    text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200
+                                    disabled:opacity-70 disabled:cursor-not-allowed"
                                 >
-                                    <Send className="w-5 h-5 mr-2" />
-                                    Send Message
+                                    {isSubmitting ? (
+                                        <>
+                                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                            Sending...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Send className="w-5 h-5 mr-2" />
+                                            Send Message
+                                        </>
+                                    )}
                                 </motion.button>
                             </form>
                         </motion.div>
@@ -156,10 +326,9 @@ export const ContactSection = () => {
                             {/* Map or Additional Content */}
                             <div className="mt-8">
                                 <div className="bg-gray-100 dark:bg-gray-800 rounded-xl h-64">
-                                    {/* Add map component or additional content here */}
                                     <div className="w-full h-full rounded-xl overflow-hidden">
                                         <img
-                                            src="/api/placeholder/800/400"
+                                            src="/images/location.png"
                                             alt="Location map"
                                             className="w-full h-full object-cover"
                                         />
