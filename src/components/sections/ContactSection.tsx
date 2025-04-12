@@ -1,5 +1,6 @@
 import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send } from 'lucide-react';
+import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
+import { useState } from 'react';
 
 const ContactInfo = ({ Icon, title, content }: { Icon: any; title: string; content: string }) => (
     <div className="flex items-start space-x-4">
