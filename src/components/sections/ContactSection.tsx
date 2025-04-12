@@ -280,11 +280,22 @@ export const ContactSection = () => {
                                     whileHover={{ scale: 1.02 }}
                                     whileTap={{ scale: 0.98 }}
                                     type="submit"
+                                    disabled={isSubmitting}
                                     className="w-full inline-flex items-center justify-center px-6 py-3 bg-indigo-600 
-                         text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200"
+                                    text-white rounded-lg hover:bg-indigo-700 transition-colors duration-200
+                                    disabled:opacity-70 disabled:cursor-not-allowed"
                                 >
-                                    <Send className="w-5 h-5 mr-2" />
-                                    Send Message
+                                    {isSubmitting ? (
+                                        <>
+                                            <Loader2 className="w-5 h-5 mr-2 animate-spin" />
+                                            Sending...
+                                        </>
+                                    ) : (
+                                        <>
+                                            <Send className="w-5 h-5 mr-2" />
+                                            Send Message
+                                        </>
+                                    )}
                                 </motion.button>
                             </form>
                         </motion.div>
