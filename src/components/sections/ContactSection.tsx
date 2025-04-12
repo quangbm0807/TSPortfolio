@@ -247,9 +247,12 @@ export const ContactSection = () => {
                                     </label>
                                     <input
                                         type="text"
+                                        name="subject"
+                                        value={formData.subject}
+                                        onChange={handleChange}
                                         className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 dark:bg-gray-700 
-                           dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
-                           outline-none transition-all duration-200"
+                                        dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
+                                        outline-none transition-all duration-200"
                                         placeholder="Project Inquiry"
                                     />
                                 </div>
