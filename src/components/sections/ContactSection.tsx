@@ -186,27 +186,39 @@ export const ContactSection = () => {
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            First Name
+                                            First Name*
                                         </label>
                                         <input
                                             type="text"
-                                            className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 dark:bg-gray-700 
-                             dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
-                             outline-none transition-all duration-200"
+                                            name="firstName"
+                                            value={formData.firstName}
+                                            onChange={handleChange}
+                                            className={`w-full px-4 py-2 rounded-lg border ${errors.firstName ? 'border-red-500 dark:border-red-400' : 'dark:border-gray-600'
+                                                } dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
+                                            outline-none transition-all duration-200`}
                                             placeholder="John"
                                         />
+                                        {errors.firstName && (
+                                            <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.firstName}</p>
+                                        )}
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                                            Last Name
+                                            Last Name*
                                         </label>
                                         <input
                                             type="text"
-                                            className="w-full px-4 py-2 rounded-lg border dark:border-gray-600 dark:bg-gray-700 
-                             dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
-                             outline-none transition-all duration-200"
+                                            name="lastName"
+                                            value={formData.lastName}
+                                            onChange={handleChange}
+                                            className={`w-full px-4 py-2 rounded-lg border ${errors.lastName ? 'border-red-500 dark:border-red-400' : 'dark:border-gray-600'
+                                                } dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
+                                            outline-none transition-all duration-200`}
                                             placeholder="Doe"
                                         />
+                                        {errors.lastName && (
+                                            <p className="mt-1 text-sm text-red-500 dark:text-red-400">{errors.lastName}</p>
+                                        )}
                                     </div>
                                 </div>
 
