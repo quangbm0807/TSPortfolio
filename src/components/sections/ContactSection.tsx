@@ -326,10 +326,9 @@ export const ContactSection = () => {
                             {/* Map or Additional Content */}
                             <div className="mt-8">
                                 <div className="bg-gray-100 dark:bg-gray-800 rounded-xl h-64">
-                                    {/* Add map component or additional content here */}
                                     <div className="w-full h-full rounded-xl overflow-hidden">
                                         <img
-                                            src="/api/placeholder/800/400"
+                                            src="/images/location.png"
                                             alt="Location map"
                                             className="w-full h-full object-cover"
                                         />
