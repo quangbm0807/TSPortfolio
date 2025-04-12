@@ -13,10 +13,127 @@ const ContactInfo = ({ Icon, title, content }: { Icon: any; title: string; conte
     </div>
 );
 
+interface FormData {
+    firstName: string;
+    lastName: string;
+    email: string;
+    subject: string;
+    message: string;
+}
+
+interface FormErrors {
+    firstName?: string;
+    lastName?: string;
+    email?: string;
+    subject?: string;
+    message?: string;
+}
+
 export const ContactSection = () => {
-    const handleSubmit = (e: React.FormEvent) => {
+    const [formData, setFormData] = useState<FormData>({
+        firstName: '',
+        lastName: '',
+        email: '',
+        subject: '',
+        message: ''
+    });
+
+    const [errors, setErrors] = useState<FormErrors>({});
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
+    const [statusMessage, setStatusMessage] = useState('');
+
+    const validateForm = (): boolean => {
+        const newErrors: FormErrors = {};
+
+        if (!formData.firstName.trim()) {
+            newErrors.firstName = 'First name is required';
+        }
+
+        if (!formData.lastName.trim()) {
+            newErrors.lastName = 'Last name is required';
+        }
+
+        if (!formData.email.trim()) {
+            newErrors.email = 'Email is required';
+        } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(formData.email)) {
+            newErrors.email = 'Please enter a valid email address';
+        }
+
+        if (!formData.message.trim()) {
+            newErrors.message = 'Message is required';
+        }
+
+        setErrors(newErrors);
+        return Object.keys(newErrors).length === 0;
+    };
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target;
+        setFormData(prev => ({ ...prev, [name]: value }));
+
+        // Clear error when user types
+        if (errors[name as keyof FormErrors]) {
+            setErrors(prev => ({ ...prev, [name]: undefined }));
+        }
+    };
+
+    const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
-        // Add form submission logic here
+
+        if (!validateForm()) {
+            return;
+        }
+
+        setIsSubmitting(true);
+        setSubmitStatus('idle');
+
+        try {
+            // Determine the appropriate URL based on environment
+            const baseUrl = import.meta.env.DEV
+                ? 'http://localhost:3001'
+                : '';
+
+            const response = await fetch(`${baseUrl}/api/contact`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(formData),
+            });
+
+            const data = await response.json();
+
+            if (!response.ok) {
+                throw new Error(data.error || 'Failed to send message');
+            }
+
+            setSubmitStatus('success');
+            setStatusMessage('Your message has been sent successfully! I will get back to you soon.');
+
+            // Reset form after successful submission
+            setFormData({
+                firstName: '',
+                lastName: '',
+                email: '',
+                subject: '',
+                message: ''
+            });
+
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            setSubmitStatus('error');
+            setStatusMessage(error instanceof Error ? error.message : 'An unexpected error occurred. Please try again later.');
+        } finally {
+            setIsSubmitting(false);
+
+            // Automatically clear success message after 5 seconds
+            if (submitStatus === 'success') {
+                setTimeout(() => {
+                    setSubmitStatus('idle');
+                }, 5000);
+            }
+        }
     };
 
     return (
