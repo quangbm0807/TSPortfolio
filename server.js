@@ -17,16 +17,17 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
+// GitHub Contributions endpoint
 app.get('/api/github-contributions', async (req, res) => {
-    try {
-        const { username = 'quangbm0807' } = req.query;
-        const token = process.env.GITHUB_TOKEN;
+  try {
+    const { username = 'quangbm0807' } = req.query;
+    const token = process.env.GITHUB_TOKEN;
 
-        if (!token) {
-            throw new Error('GITHUB_TOKEN environment variable is not set');
-        }
+    if (!token) {
+      throw new Error('GITHUB_TOKEN environment variable is not set');
+    }
 
-        const query = `
+    const query = `
       query($username: String!, $from: DateTime!, $to: DateTime!) {
         user(login: $username) {
           contributionsCollection(from: $from, to: $to) {
