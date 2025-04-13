@@ -108,8 +108,15 @@ app.post('/api/contact', async (req, res) => {
       },
     });
 
-    // Create email content
-    const mailOptions = {
+    // Current date for email signature
+    const currentDate = new Date().toLocaleDateString('en-US', {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric'
+    });
+
+    // Create email content with improved styling for admin notification
+    const adminMailOptions = {
       from: process.env.EMAIL_FROM,
       to: process.env.EMAIL_TO || 'buiminhquang2002@gmail.com',
       replyTo: email,
