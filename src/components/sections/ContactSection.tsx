@@ -44,6 +44,7 @@ export const ContactSection = () => {
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
     const [statusMessage, setStatusMessage] = useState('');
+    const formRef = useRef<HTMLFormElement>(null);
 
     const validateForm = (): boolean => {
         const newErrors: FormErrors = {};
