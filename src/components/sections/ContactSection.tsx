@@ -129,11 +129,11 @@ export const ContactSection = () => {
         } finally {
             setIsSubmitting(false);
 
-            // Automatically clear success message after 5 seconds
+            // Automatically clear success message after 8 seconds
             if (submitStatus === 'success') {
                 setTimeout(() => {
                     setSubmitStatus('idle');
-                }, 5000);
+                }, 8000);
             }
         }
     };
