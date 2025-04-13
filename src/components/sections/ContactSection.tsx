@@ -115,13 +115,12 @@ export const ContactSection = () => {
             setStatusMessage('Your message has been sent successfully! I will get back to you soon.');
 
             // Reset form after successful submission
-            setFormData({
-                firstName: '',
-                lastName: '',
-                email: '',
-                subject: '',
-                message: ''
-            });
+            setFormData(defaultFormData);
+
+            // Scroll to top of form
+            if (formRef.current) {
+                formRef.current.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
 
         } catch (error) {
             console.error('Error submitting form:', error);
