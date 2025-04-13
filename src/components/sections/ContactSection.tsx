@@ -220,7 +220,7 @@ export const ContactSection = () => {
                             <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
                                             <User className="w-4 h-4 mr-1" />
                                             First Name*
                                         </label>
@@ -250,7 +250,7 @@ export const ContactSection = () => {
                                         </AnimatePresence>
                                     </div>
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                                        <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
                                             <User className="w-4 h-4 mr-1" />
                                             Last Name*
                                         </label>
@@ -282,7 +282,7 @@ export const ContactSection = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
                                         <Mail className="w-4 h-4 mr-1" />
                                         Email*
                                     </label>
@@ -313,7 +313,7 @@ export const ContactSection = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
                                         <MessageSquare className="w-4 h-4 mr-1" />
                                         Subject
                                     </label>
@@ -330,7 +330,7 @@ export const ContactSection = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                                    <label className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
                                         <MessageSquare className="w-4 h-4 mr-1" />
                                         Message*
                                     </label>
@@ -446,7 +446,6 @@ export const ContactSection = () => {
                                 <div className="flex space-x-4">
                                     <motion.a
                                         href="https://github.com/quangbm0807"
-                                        target="_blank"
                                         whileHover={{ y: -5 }}
                                         className="p-3 bg-gray-100 dark:bg-gray-700 rounded-full text-indigo-600 dark:text-indigo-400 hover:bg-indigo-100 dark:hover:bg-indigo-900/30 transition-colors duration-200"
                                     >
