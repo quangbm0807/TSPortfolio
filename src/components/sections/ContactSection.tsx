@@ -139,8 +139,12 @@ export const ContactSection = () => {
     };
 
     return (
-        <section id="contact" className="py-20 relative overflow-hidden">
-            <div className="container mx-auto px-4">
+        <section id="contact" className="py-24 relative overflow-hidden bg-gray-50 dark:bg-gray-900">
+            {/* Background decoration */}
+            <div className="absolute -top-24 -right-24 w-96 h-96 bg-indigo-100 dark:bg-indigo-900/20 rounded-full opacity-50 blur-3xl"></div>
+            <div className="absolute -bottom-24 -left-24 w-80 h-80 bg-indigo-100 dark:bg-indigo-900/20 rounded-full opacity-50 blur-3xl"></div>
+
+            <div className="container mx-auto px-4 relative z-10">
                 <motion.div
                     initial={{ opacity: 0 }}
                     whileInView={{ opacity: 1 }}
