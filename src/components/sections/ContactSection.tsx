@@ -37,8 +37,9 @@ export const ContactSection = () => {
         email: '',
         subject: '',
         message: ''
-    });
+    };
 
+    const [formData, setFormData] = useState<FormData>(defaultFormData);
     const [errors, setErrors] = useState<FormErrors>({});
     const [isSubmitting, setIsSubmitting] = useState(false);
     const [submitStatus, setSubmitStatus] = useState<'idle' | 'success' | 'error'>('idle');
