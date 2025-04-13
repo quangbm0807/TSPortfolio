@@ -1,18 +1,6 @@
-import { motion } from 'framer-motion';
-import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Loader2 } from 'lucide-react';
-import { useState } from 'react';
-
-const ContactInfo = ({ Icon, title, content }: { Icon: any; title: string; content: string }) => (
-    <div className="flex items-start space-x-4">
-        <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg">
-            <Icon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
-        </div>
-        <div>
-            <h3 className="font-medium text-gray-900 dark:text-white mb-1">{title}</h3>
-            <p className="text-gray-600 dark:text-gray-300">{content}</p>
-        </div>
-    </div>
-);
+import { motion, AnimatePresence } from 'framer-motion';
+import { Mail, Phone, MapPin, Send, CheckCircle, AlertCircle, Loader2, Clock, MessageSquare, User, Sparkles } from 'lucide-react';
+import { useState, useRef } from 'react';
 
 interface FormData {
     firstName: string;
