@@ -225,7 +225,7 @@ app.post('/api/contact', async (req, res) => {
               </div>
               <div class="social-links" style="text-align: center;">
                 <a href="https://github.com/quangbm0807" class="social-link">GitHub</a> | 
-                <a href="https://linkedin.com/in/your-linkedin" class="social-link">LinkedIn</a> | 
+                <a href="https://www.linkedin.com/in/quang-bui-minh-626724316" class="social-link">LinkedIn</a> | 
                 <a href="https://bminhquang.name.vn" class="social-link">Portfolio</a>
               </div>
             </div>
