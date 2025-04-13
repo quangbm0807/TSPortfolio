@@ -18,8 +18,20 @@ interface FormErrors {
     message?: string;
 }
 
+const ContactInfo = ({ Icon, title, content }: { Icon: any; title: string; content: string }) => (
+    <div className="flex items-start space-x-4 group">
+        <div className="p-3 bg-indigo-100 dark:bg-indigo-900/30 rounded-lg transition-all duration-300 group-hover:bg-indigo-200 dark:group-hover:bg-indigo-800/40 group-hover:shadow-md">
+            <Icon className="w-6 h-6 text-indigo-600 dark:text-indigo-400" />
+        </div>
+        <div>
+            <h3 className="font-medium text-gray-900 dark:text-white mb-1 transition-colors duration-300 group-hover:text-indigo-600 dark:group-hover:text-indigo-400">{title}</h3>
+            <p className="text-gray-600 dark:text-gray-300">{content}</p>
+        </div>
+    </div>
+);
+
 export const ContactSection = () => {
-    const [formData, setFormData] = useState<FormData>({
+    const defaultFormData = {
         firstName: '',
         lastName: '',
         email: '',
