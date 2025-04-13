@@ -49,20 +49,135 @@ export default async function handler(req, res) {
             replyTo: email,
             subject: `Portfolio Contact: ${subject || 'New message from your website'}`,
             html: `
-        <h3>New message from your portfolio website</h3>
-        <p><strong>Name:</strong> ${firstName} ${lastName}</p>
-        <p><strong>Email:</strong> ${email}</p>
-        <p><strong>Subject:</strong> ${subject || 'N/A'}</p>
-        <p><strong>Message:</strong></p>
-        <p>${message.replace(/\n/g, '<br>')}</p>
-      `,
+                <!DOCTYPE html>
+                <html>
+                <head>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; }
+                    .email-container { border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+                    .email-header { background-color: #4F46E5; color: white; padding: 20px; text-align: center; }
+                    .email-body { padding: 20px; background-color: #fff; }
+                    .email-footer { background-color: #f9f9f9; padding: 15px; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #e0e0e0; }
+                    h2 { color: #4F46E5; margin-top: 0; }
+                    .info-item { margin-bottom: 15px; }
+                    .info-label { font-weight: bold; color: #555; }
+                    .message-box { background-color: #f5f7ff; border-left: 3px solid #4F46E5; padding: 15px; margin-top: 15px; border-radius: 0 4px 4px 0; }
+                </style>
+                </head>
+                <body>
+                <div class="email-container">
+                    <div class="email-header">
+                    <h1>New Portfolio Contact Message</h1>
+                    </div>
+                    <div class="email-body">
+                    <h2>You've received a new message</h2>
+                    
+                    <div class="info-item">
+                        <p class="info-label">From:</p>
+                        <p>${firstName} ${lastName}</p>
+                    </div>
+                    
+                    <div class="info-item">
+                        <p class="info-label">Email:</p>
+                        <p><a href="mailto:${email}">${email}</a></p>
+                    </div>
+                    
+                    <div class="info-item">
+                        <p class="info-label">Subject:</p>
+                        <p>${subject || 'N/A'}</p>
+                    </div>
+                    
+                    <div class="info-item">
+                        <p class="info-label">Message:</p>
+                        <div class="message-box">
+                        ${message.replace(/\n/g, '<br>')}
+                        </div>
+                    </div>
+                    </div>
+                    <div class="email-footer">
+                    <p>This message was sent from your portfolio contact form on ${currentDate}</p>
+                    </div>
+                </div>
+                </body>
+                </html>
+            `,
         };
 
-        // Send email
-        await transporter.sendMail(mailOptions);
+        // Create confirmation email to send to the user
+        const userConfirmationMailOptions = {
+            from: process.env.EMAIL_FROM,
+            to: email,
+            subject: `Thank you for your message, ${firstName}!`,
+            html: `
+                <!DOCTYPE html>
+                <html>
+                <head>
+                <style>
+                    body { font-family: Arial, sans-serif; line-height: 1.6; color: #333; max-width: 600px; margin: 0 auto; }
+                    .email-container { border: 1px solid #e0e0e0; border-radius: 8px; overflow: hidden; }
+                    .email-header { background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; padding: 30px; text-align: center; }
+                    .logo { width: 80px; height: 80px; background-color: white; border-radius: 50%; margin: 0 auto 15px; padding: 15px; }
+                    .email-body { padding: 30px; background-color: #fff; }
+                    .email-footer { background-color: #f9f9f9; padding: 20px; text-align: center; font-size: 12px; color: #666; border-top: 1px solid #e0e0e0; }
+                    h2 { color: #4F46E5; margin-top: 0; }
+                    p { margin-bottom: 15px; }
+                    .button { display: inline-block; background-color: #4F46E5; color: white; text-decoration: none; padding: 12px 25px; border-radius: 25px; font-weight: bold; margin-top: 15px; }
+                    .social-links { margin-top: 20px; }
+                    .social-link { display: inline-block; margin: 0 10px; color: #4F46E5; text-decoration: none; font-weight: bold; }
+                    .message-summary { background-color: #f5f7ff; border-left: 3px solid #4F46E5; padding: 15px; margin: 20px 0; border-radius: 0 4px 4px 0; }
+                </style>
+                </head>
+                <body>
+                <div class="email-container">
+                    <div class="email-header">
+                    <div class="logo">
+                        <!-- You can replace this with your actual logo image -->
+                        <img src="https://bminhquang.name.vn/favicon.ico" alt="BMQ" style="width: 100%; height: auto;">
+                    </div>
+                    <h1>Message Received</h1>
+                    </div>
+                    <div class="email-body">
+                    <h2>Dear ${firstName},</h2>
+                    
+                    <p>Thank you for reaching out to me through my portfolio website. I appreciate your interest and have received your message.</p>
+                    
+                    <div class="message-summary">
+                        <p><strong>Subject:</strong> ${subject || 'N/A'}</p>
+                        <p><strong>Message preview:</strong> ${message.substring(0, 100)}${message.length > 100 ? '...' : ''}</p>
+                    </div>
+                    
+                    <p>I will review your message and get back to you as soon as possible. Typically, I respond within 1-2 business days.</p>
+                    
+                    <p>In the meantime, please feel free to check out my other projects on GitHub or LinkedIn.</p>
+                    
+                    <div style="text-align: center;">
+                        <a href="https://github.com/quangbm0807" class="button">Visit My GitHub</a>
+                    </div>
+                    
+                    <div class="social-links" style="text-align: center;">
+                        <a href="https://github.com/quangbm0807" class="social-link">GitHub</a> | 
+                        <a href="https://linkedin.com/in/your-linkedin" class="social-link">LinkedIn</a> | 
+                        <a href="https://bminhquang.name.vn" class="social-link">Portfolio</a>
+                    </div>
+                    </div>
+                    <div class="email-footer">
+                    <p>© ${new Date().getFullYear()} Bui Minh Quang. All rights reserved.</p>
+                    <p>If you did not submit this contact form, please disregard this email.</p>
+                    </div>
+                </div>
+                </body>
+                </html>
+            `,
+        };
+
+        // Send emails - both to admin and confirmation to user
+        await Promise.all([
+            transporter.sendMail(adminMailOptions),
+            transporter.sendMail(userConfirmationMailOptions)
+        ]);
 
         // Return success response
-        return res.status(200).json({ success: true, message: 'Email sent successfully' });
+        return res.status(200).json({ success: true, message: 'Messages sent successfully' });
     } catch (error) {
         console.error('Error sending email:', error);
         return res.status(500).json({ error: 'Failed to send email', details: error.message });
