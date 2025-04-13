@@ -152,6 +152,10 @@ export const ContactSection = () => {
                     className="max-w-6xl mx-auto"
                 >
                     <div className="text-center mb-16">
+                        <div className="inline-flex items-center justify-center mb-3 px-4 py-1.5 bg-indigo-100 dark:bg-indigo-900/30 rounded-full">
+                            <Sparkles className="w-4 h-4 mr-2 text-indigo-600 dark:text-indigo-400" />
+                            <span className="text-sm font-medium text-indigo-600 dark:text-indigo-400">Let's Connect</span>
+                        </div>
                         <motion.h2
                             initial={{ opacity: 0, y: 20 }}
                             whileInView={{ opacity: 1, y: 0 }}
