@@ -224,9 +224,8 @@ app.post('/api/contact', async (req, res) => {
               <p>In the meantime, please feel free to check out my other projects on GitHub or LinkedIn.</p>
               
               <div style="text-align: center;">
-                <a href="https://github.com/quangbm0807" class="button">Visit My GitHub</a>
+                <a href="https://github.com/quangbm0807" class="button" style="color: white;">Visit My GitHub</a>
               </div>
-              
               <div class="social-links" style="text-align: center;">
                 <a href="https://github.com/quangbm0807" class="social-link">GitHub</a> | 
                 <a href="https://linkedin.com/in/your-linkedin" class="social-link">LinkedIn</a> | 
