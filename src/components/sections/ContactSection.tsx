@@ -229,7 +229,9 @@ export const ContactSection = () => {
                                             name="firstName"
                                             value={formData.firstName}
                                             onChange={handleChange}
-                                            className={`w-full px-4 py-2 rounded-lg border ${errors.firstName ? 'border-red-500 dark:border-red-400' : 'dark:border-gray-600'
+                                            className={`w-full px-4 py-3 rounded-lg border ${errors.firstName
+                                                ? 'border-red-500 dark:border-red-400 bg-red-50 dark:bg-red-900/10'
+                                                : 'border-gray-300 dark:border-gray-600 focus:border-indigo-500 dark:focus:border-indigo-400'
                                                 } dark:bg-gray-700 dark:text-white focus:ring-2 focus:ring-indigo-500 dark:focus:ring-indigo-400 
                                             outline-none transition-all duration-200`}
                                             placeholder="John"
