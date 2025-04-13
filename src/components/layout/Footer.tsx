@@ -4,7 +4,7 @@ import { motion } from 'framer-motion';
 export const Footer = () => {
     const socialLinks = [
         { Icon: Github, href: "https://github.com/quangbm0807", label: "GitHub" },
-        { Icon: Linkedin, href: "https://linkedin.com/in/your-linkedin", label: "LinkedIn" },
+        { Icon: Linkedin, href: "https://www.linkedin.com/in/quang-bui-minh-626724316", label: "LinkedIn" },
         { Icon: Mail, href: "mailto:buiminhquang2002@gmail.com", label: "Email" },
     ];
 
