@@ -175,26 +175,53 @@ export const ContactSection = () => {
                             initial={{ opacity: 0, x: -20 }}
                             whileInView={{ opacity: 1, x: 0 }}
                             viewport={{ once: true }}
-                            className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-8"
+                            className="bg-white dark:bg-gray-800 rounded-2xl shadow-xl p-8 border border-gray-100 dark:border-gray-700 backdrop-blur-sm"
                         >
-                            {submitStatus === 'success' && (
-                                <div className="mb-6 p-4 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-200 rounded-lg flex items-center">
-                                    <CheckCircle className="w-5 h-5 mr-2 flex-shrink-0" />
-                                    <p>{statusMessage}</p>
-                                </div>
-                            )}
+                            <AnimatePresence mode="wait">
+                                {submitStatus === 'success' && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 10 }}
+                                        className="mb-6 bg-white dark:bg-gray-900 border border-green-200 dark:border-green-800 rounded-lg overflow-hidden shadow-md"
+                                    >
+                                        <div className="bg-green-100 dark:bg-green-900/30 px-4 py-2 flex items-center border-b border-green-200 dark:border-green-800">
+                                            <CheckCircle className="w-5 h-5 mr-2 text-green-600 dark:text-green-400" />
+                                            <h3 className="font-medium text-green-800 dark:text-green-200">Message Sent</h3>
+                                        </div>
+                                        <div className="p-4">
+                                            <p className="text-gray-700 dark:text-gray-300 mb-3">{statusMessage}</p>
+                                            <div className="flex items-center text-sm text-gray-500 dark:text-gray-400">
+                                                <Clock className="w-4 h-4 mr-1" />
+                                                <span>A confirmation email has been sent to your inbox</span>
+                                            </div>
+                                        </div>
+                                    </motion.div>
+                                )}
 
-                            {submitStatus === 'error' && (
-                                <div className="mb-6 p-4 bg-red-100 dark:bg-red-900/30 text-red-800 dark:text-red-200 rounded-lg flex items-center">
-                                    <AlertCircle className="w-5 h-5 mr-2 flex-shrink-0" />
-                                    <p>{statusMessage}</p>
-                                </div>
-                            )}
+                                {submitStatus === 'error' && (
+                                    <motion.div
+                                        initial={{ opacity: 0, y: -10 }}
+                                        animate={{ opacity: 1, y: 0 }}
+                                        exit={{ opacity: 0, y: 10 }}
+                                        className="mb-6 bg-white dark:bg-gray-900 border border-red-200 dark:border-red-800 rounded-lg overflow-hidden shadow-md"
+                                    >
+                                        <div className="bg-red-100 dark:bg-red-900/30 px-4 py-2 flex items-center border-b border-red-200 dark:border-red-800">
+                                            <AlertCircle className="w-5 h-5 mr-2 text-red-600 dark:text-red-400" />
+                                            <h3 className="font-medium text-red-800 dark:text-red-200">Error</h3>
+                                        </div>
+                                        <div className="p-4">
+                                            <p className="text-gray-700 dark:text-gray-300">{statusMessage}</p>
+                                        </div>
+                                    </motion.div>
+                                )}
+                            </AnimatePresence>
 
-                            <form onSubmit={handleSubmit} className="space-y-6">
+                            <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
                                 <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 flex items-center">
+                                            <User className="w-4 h-4 mr-1" />
                                             First Name*
                                         </label>
                                         <input
