@@ -1,6 +1,6 @@
-// src/components/animations/EnhancedAnimations.tsx
-import { motion } from 'framer-motion';
+import { motion, useAnimation } from 'framer-motion';
 import React, { useState, useEffect, useRef, useCallback, memo } from 'react';
+import { useTheme } from '../../context/ThemeContext';
 
 // Types
 interface FloatingElementProps {
@@ -20,11 +20,16 @@ interface AnimatedTextProps {
     effect?: 'fadeUp' | 'fadeIn' | 'scale';
 }
 
-interface RevealSectionProps {
+interface RevealProps {
     children: React.ReactNode;
     width?: string;
     delay?: number;
+    duration?: number;
+    threshold?: number;
+    distance?: number;
     direction?: 'up' | 'down' | 'left' | 'right';
+    repeat?: boolean;
+    className?: string;
 }
 
 interface CounterAnimationProps {
@@ -35,6 +40,7 @@ interface CounterAnimationProps {
     className?: string;
     decimals?: number;
     formatter?: (value: number) => string;
+    repeat?: boolean;
 }
 
 interface AnimatedBorderProps {
@@ -43,13 +49,7 @@ interface AnimatedBorderProps {
     borderColor?: string;
     duration?: number;
     pattern?: 'full' | 'corners' | 'sides';
-}
-
-interface GlitchTextProps {
-    text: string;
-    className?: string;
-    glitchIntensity?: 'low' | 'medium' | 'high';
-    ariaLabel?: string;
+    repeat?: boolean;
 }
 
 interface Card3DProps {
@@ -58,18 +58,8 @@ interface Card3DProps {
     intensity?: number;
     perspective?: number;
     glare?: boolean;
-}
-
-interface ParticleExplosionProps {
-    className?: string;
-    particleCount?: number;
-    duration?: number;
-    size?: number;
-    colors?: string[];
-    autoTrigger?: boolean;
-    triggerDelay?: number;
-    buttonText?: string;
-    onExplode?: () => void;
+    glareColor?: string;
+    transformOnHover?: boolean;
 }
 
 interface AnimatedGradientTextProps {
@@ -82,12 +72,28 @@ interface AnimatedGradientTextProps {
     angle?: string;
 }
 
-interface SpotlightProps {
+interface StaggerContainerProps {
     children: React.ReactNode;
     className?: string;
-    size?: number;
-    color?: string;
-    intensity?: number;
+    delayChildren?: number;
+    staggerChildren?: number;
+    direction?: 'forwards' | 'backwards';
+    repeat?: boolean;
+    animation?: 'fadeUp' | 'fadeIn' | 'zoom' | 'slideIn';
+    distance?: number;
+    once?: boolean;
+}
+
+interface FadeInWhenVisibleProps {
+    children: React.ReactNode;
+    className?: string;
+    delay?: number;
+    duration?: number;
+    threshold?: number;
+    repeat?: boolean;
+    animation?: 'fadeUp' | 'fadeIn' | 'scale' | 'slideIn';
+    direction?: 'up' | 'down' | 'left' | 'right';
+    distance?: number;
 }
 
 // Floating animation effect for any element
@@ -121,7 +127,7 @@ export const FloatingElement = memo(({
 export const AnimatedText = memo(({
     text,
     className = '',
-    once = true,
+    once = false,
     staggerChildren = 0.03,
     delayChildren = 0,
     effect = 'fadeUp'
@@ -129,77 +135,130 @@ export const AnimatedText = memo(({
     // Split the text into individual characters
     const letters = Array.from(text);
 
-    const container = {
-        hidden: { opacity: 0 },
-        visible: () => ({
-            opacity: 1,
-            transition: {
-                staggerChildren: staggerChildren,
-                delayChildren: delayChildren
-            },
-        }),
-    };
-
-    // Different animation effects
+    // Effects library
     const effects = {
         fadeUp: {
-            visible: {
-                opacity: 1,
-                y: 0,
-                transition: {
-                    type: "spring",
-                    damping: 12,
-                    stiffness: 200,
-                },
+            container: {
+                hidden: { opacity: 0 },
+                visible: (i = 1) => ({
+                    opacity: 1,
+                    transition: {
+                        staggerChildren: staggerChildren,
+                        delayChildren: delayChildren * i,
+                    },
+                }),
             },
-            hidden: {
-                opacity: 0,
-                y: 20,
-                transition: {
-                    type: "spring",
-                    damping: 12,
-                    stiffness: 200,
+            child: {
+                visible: {
+                    opacity: 1,
+                    y: 0,
+                    transition: {
+                        type: "spring",
+                        damping: 12,
+                        stiffness: 200,
+                    },
                 },
-            },
+                hidden: {
+                    opacity: 0,
+                    y: 20,
+                    transition: {
+                        type: "spring",
+                        damping: 12,
+                        stiffness: 200,
+                    },
+                },
+            }
         },
         fadeIn: {
-            visible: {
-                opacity: 1,
-                transition: { duration: 0.3 },
+            container: {
+                hidden: { opacity: 0 },
+                visible: (i = 1) => ({
+                    opacity: 1,
+                    transition: {
+                        staggerChildren: staggerChildren,
+                        delayChildren: delayChildren * i,
+                    },
+                }),
             },
-            hidden: {
-                opacity: 0,
-                transition: { duration: 0.3 },
-            },
+            child: {
+                visible: {
+                    opacity: 1,
+                    transition: { duration: 0.3 },
+                },
+                hidden: {
+                    opacity: 0,
+                    transition: { duration: 0.3 },
+                },
+            }
         },
         scale: {
-            visible: {
-                opacity: 1,
-                scale: 1,
-                transition: { type: "spring", stiffness: 300, damping: 24 },
+            container: {
+                hidden: { opacity: 0 },
+                visible: (i = 1) => ({
+                    opacity: 1,
+                    transition: {
+                        staggerChildren: staggerChildren,
+                        delayChildren: delayChildren * i,
+                    },
+                }),
             },
-            hidden: {
-                opacity: 0,
-                scale: 0.8,
-                transition: { type: "spring", stiffness: 300, damping: 24 },
-            },
+            child: {
+                visible: {
+                    opacity: 1,
+                    scale: 1,
+                    transition: { type: "spring", stiffness: 300, damping: 24 },
+                },
+                hidden: {
+                    opacity: 0,
+                    scale: 0.8,
+                    transition: { type: "spring", stiffness: 300, damping: 24 },
+                },
+            }
         }
     };
 
-    const child = effects[effect];
+    const selectedEffect = effects[effect];
+
+    const controls = useAnimation();
+    const ref = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        controls.start("visible");
+                    } else if (!once) {
+                        controls.start("hidden");
+                    }
+                });
+            },
+            { threshold: 0.1, rootMargin: "100px" }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, [controls, once]);
 
     return (
         <motion.div
+            ref={ref}
             className={`overflow-hidden inline-flex ${className}`}
-            variants={container}
+            variants={selectedEffect.container}
             initial="hidden"
-            whileInView="visible"
-            viewport={{ once }}
+            animate={controls}
         >
             {letters.map((letter, index) => (
                 <motion.span
                     key={index}
-                    variants={child}
+                    variants={selectedEffect.child}
                     className="inline-block"
                     style={{ whiteSpace: letter === " " ? "pre" : "normal" }}
                 >
@@ -211,29 +270,62 @@ export const AnimatedText = memo(({
 });
 
 // Reveal animation for sections
-export const RevealSection = memo(({
+export const Reveal = memo(({
     children,
     width = "100%",
     delay = 0,
-    direction = 'up'
-}: RevealSectionProps) => {
+    duration = 0.5,
+    threshold = 0.1,
+    distance = 50,
+    direction = 'up',
+    repeat = false,
+    className = ""
+}: RevealProps) => {
+    const controls = useAnimation();
+    const ref = useRef<HTMLDivElement>(null);
+
     const directionMap = {
-        up: { initial: { opacity: 0, y: 75 }, animate: { opacity: 1, y: 0 } },
-        down: { initial: { opacity: 0, y: -75 }, animate: { opacity: 1, y: 0 } },
-        left: { initial: { opacity: 0, x: 75 }, animate: { opacity: 1, x: 0 } },
-        right: { initial: { opacity: 0, x: -75 }, animate: { opacity: 1, x: 0 } },
+        up: { hidden: { y: distance, opacity: 0 }, visible: { y: 0, opacity: 1 } },
+        down: { hidden: { y: -distance, opacity: 0 }, visible: { y: 0, opacity: 1 } },
+        left: { hidden: { x: -distance, opacity: 0 }, visible: { x: 0, opacity: 1 } },
+        right: { hidden: { x: distance, opacity: 0 }, visible: { x: 0, opacity: 1 } },
     };
 
-    const selectedAnimation = directionMap[direction];
+    const selectedVariants = directionMap[direction];
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        controls.start("visible");
+                    } else if (repeat) {
+                        controls.start("hidden");
+                    }
+                });
+            },
+            { threshold, rootMargin: "10px" }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, [controls, threshold, repeat]);
 
     return (
-        <div className="relative overflow-hidden" style={{ width }}>
+        <div ref={ref} className={`relative overflow-hidden ${className}`} style={{ width }}>
             <motion.div
-                initial={selectedAnimation.initial}
-                whileInView={selectedAnimation.animate}
-                viewport={{ once: true, margin: "-100px" }}
+                variants={selectedVariants}
+                initial="hidden"
+                animate={controls}
                 transition={{
-                    duration: 0.5,
+                    duration,
                     ease: "easeOut",
                     delay
                 }}
@@ -241,6 +333,204 @@ export const RevealSection = memo(({
                 {children}
             </motion.div>
         </div>
+    );
+});
+
+// Stagger children animations
+export const StaggerContainer = memo(({
+    children,
+    className = "",
+    delayChildren = 0,
+    staggerChildren = 0.1,
+    direction = 'forwards',
+    repeat = false,
+    animation = 'fadeUp',
+    distance = 30,
+    once = false
+}: StaggerContainerProps) => {
+    const controls = useAnimation();
+    const ref = useRef<HTMLDivElement>(null);
+
+    // Animation variants
+    const animations = {
+        fadeUp: {
+            hidden: { opacity: 0, y: distance },
+            visible: { opacity: 1, y: 0 }
+        },
+        fadeIn: {
+            hidden: { opacity: 0 },
+            visible: { opacity: 1 }
+        },
+        zoom: {
+            hidden: { opacity: 0, scale: 0.8 },
+            visible: { opacity: 1, scale: 1 }
+        },
+        slideIn: {
+            hidden: { opacity: 0, x: distance },
+            visible: { opacity: 1, x: 0 }
+        }
+    };
+
+    const containerVariants = {
+        hidden: { opacity: 0 },
+        visible: {
+            opacity: 1,
+            transition: {
+                staggerChildren,
+                delayChildren,
+                staggerDirection: direction === 'backwards' ? -1 : 1
+            }
+        }
+    };
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        controls.start("visible");
+                    } else if (repeat && !once) {
+                        controls.start("hidden");
+                    }
+                });
+            },
+            { threshold: 0.1, rootMargin: "100px" }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, [controls, repeat, once]);
+
+    // Create child variants based on the animation type
+    const childVariants = animations[animation];
+
+    // Clone children and add variants
+    const childrenWithProps = React.Children.map(children, (child) => {
+        if (React.isValidElement(child)) {
+            return React.cloneElement(child as React.ReactElement<any>, {
+                variants: childVariants,
+                transition: {
+                    type: "spring",
+                    damping: 12,
+                    stiffness: 200
+                }
+            });
+        }
+        return child;
+    });
+
+    return (
+        <motion.div
+            ref={ref}
+            className={className}
+            variants={containerVariants}
+            initial="hidden"
+            animate={controls}
+        >
+            {childrenWithProps}
+        </motion.div>
+    );
+});
+
+// Generic fade in animation when element is visible
+export const FadeInWhenVisible = memo(({
+    children,
+    className = "",
+    delay = 0,
+    duration = 0.5,
+    threshold = 0.1,
+    repeat = false,
+    animation = 'fadeUp',
+    direction = 'up',
+    distance = 30
+}: FadeInWhenVisibleProps) => {
+    const controls = useAnimation();
+    const ref = useRef<HTMLDivElement>(null);
+
+    // Construct animation variants based on selected animation type and direction
+    const getVariants = () => {
+        switch (animation) {
+            case 'fadeUp':
+                return {
+                    hidden: { opacity: 0, y: direction === 'up' ? distance : -distance },
+                    visible: { opacity: 1, y: 0 }
+                };
+            case 'fadeIn':
+                return {
+                    hidden: { opacity: 0 },
+                    visible: { opacity: 1 }
+                };
+            case 'scale':
+                return {
+                    hidden: { opacity: 0, scale: 0.8 },
+                    visible: { opacity: 1, scale: 1 }
+                };
+            case 'slideIn':
+                return {
+                    hidden: {
+                        opacity: 0,
+                        x: direction === 'left' ? -distance : direction === 'right' ? distance : 0,
+                        y: direction === 'up' ? distance : direction === 'down' ? -distance : 0
+                    },
+                    visible: { opacity: 1, x: 0, y: 0 }
+                };
+            default:
+                return {
+                    hidden: { opacity: 0, y: 20 },
+                    visible: { opacity: 1, y: 0 }
+                };
+        }
+    };
+
+    const variants = getVariants();
+
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        controls.start("visible");
+                    } else if (repeat) {
+                        controls.start("hidden");
+                    }
+                });
+            },
+            { threshold, rootMargin: "10px" }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, [controls, threshold, repeat]);
+
+    return (
+        <motion.div
+            ref={ref}
+            className={className}
+            variants={variants}
+            initial="hidden"
+            animate={controls}
+            transition={{
+                duration,
+                delay,
+                ease: "easeOut"
+            }}
+        >
+            {children}
+        </motion.div>
     );
 });
 
@@ -252,12 +542,14 @@ export const CounterAnimation = memo(({
     suffix = '',
     className = '',
     decimals = 0,
-    formatter
+    formatter,
+    repeat = false
 }: CounterAnimationProps) => {
     const [count, setCount] = useState(0);
     const numberRef = useRef<HTMLDivElement>(null);
     const observerRef = useRef<IntersectionObserver | null>(null);
     const hasAnimated = useRef(false);
+    const animationRef = useRef<number | null>(null);
 
     const formatValue = useCallback((value: number) => {
         if (formatter) return formatter(value);
@@ -265,6 +557,34 @@ export const CounterAnimation = memo(({
             ? value.toFixed(decimals)
             : Math.floor(value).toString();
     }, [decimals, formatter]);
+
+    const animateValue = useCallback((timestamp: number, startTimestamp: number = timestamp) => {
+        const progress = Math.min((timestamp - startTimestamp) / (duration * 1000), 1);
+        setCount(progress * end);
+
+        if (progress < 1 && animationRef.current) {
+            animationRef.current = window.requestAnimationFrame((newTimestamp) =>
+                animateValue(newTimestamp, startTimestamp)
+            );
+        }
+    }, [end, duration]);
+
+    const startAnimation = useCallback(() => {
+        if (repeat || !hasAnimated.current) {
+            hasAnimated.current = true;
+
+            // Reset any ongoing animation
+            if (animationRef.current) {
+                window.cancelAnimationFrame(animationRef.current);
+            }
+
+            // Start from 0
+            setCount(0);
+
+            // Begin new animation
+            animationRef.current = window.requestAnimationFrame((timestamp) => animateValue(timestamp));
+        }
+    }, [animateValue, repeat]);
 
     useEffect(() => {
         // Clear any existing observer
@@ -275,28 +595,13 @@ export const CounterAnimation = memo(({
         // Create new observer
         observerRef.current = new IntersectionObserver(
             (entries) => {
-                if (entries[0].isIntersecting && !hasAnimated.current) {
-                    hasAnimated.current = true;
-
-                    let startTimestamp: number;
-                    const step = (timestamp: number) => {
-                        if (!startTimestamp) startTimestamp = timestamp;
-                        const progress = Math.min((timestamp - startTimestamp) / (duration * 1000), 1);
-                        setCount(progress * end);
-
-                        if (progress < 1) {
-                            window.requestAnimationFrame(step);
-                        }
-                    };
-                    window.requestAnimationFrame(step);
-
-                    // Disconnect after animation starts
-                    if (observerRef.current) {
-                        observerRef.current.disconnect();
-                    }
+                if (entries[0].isIntersecting) {
+                    startAnimation();
+                } else if (repeat) {
+                    hasAnimated.current = false;
                 }
             },
-            { threshold: 0.2, rootMargin: "50px" }
+            { threshold: 0.2, rootMargin: "0px" }
         );
 
         if (numberRef.current) {
@@ -307,8 +612,11 @@ export const CounterAnimation = memo(({
             if (observerRef.current) {
                 observerRef.current.disconnect();
             }
+            if (animationRef.current) {
+                window.cancelAnimationFrame(animationRef.current);
+            }
         };
-    }, [end, duration]);
+    }, [startAnimation, repeat]);
 
     return (
         <div ref={numberRef} className={className}>
@@ -323,8 +631,12 @@ export const AnimatedBorder = memo(({
     className = '',
     borderColor = 'text-primary',
     duration = 1.5,
-    pattern = 'full'
+    pattern = 'full',
+    repeat = false
 }: AnimatedBorderProps) => {
+    const { theme } = useTheme();
+    const controls = useAnimation();
+    const ref = useRef<HTMLDivElement>(null);
 
     // SVG path patterns
     const patterns = {
@@ -333,13 +645,53 @@ export const AnimatedBorder = memo(({
         sides: "M 0,0 L 100,0 M 100,0 L 100,100 M 100,100 L 0,100 M 0,100 L 0,0"
     };
 
+    useEffect(() => {
+        const observer = new IntersectionObserver(
+            (entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        controls.start({
+                            pathLength: 1,
+                            opacity: 1,
+                            transition: { duration, ease: "easeInOut" }
+                        });
+                    } else if (repeat) {
+                        controls.start({
+                            pathLength: 0,
+                            opacity: 0,
+                            transition: { duration: 0.3 }
+                        });
+                    }
+                });
+            },
+            { threshold: 0.1 }
+        );
+
+        if (ref.current) {
+            observer.observe(ref.current);
+        }
+
+        return () => {
+            if (ref.current) {
+                observer.unobserve(ref.current);
+            }
+        };
+    }, [controls, duration, repeat]);
+
+    // Adapt border color for better visibility in different themes
+    const adaptedBorderColor = theme === 'dark'
+        ? borderColor.includes('text-primary')
+            ? 'text-primary-foreground'
+            : borderColor
+        : borderColor;
+
     return (
-        <div className={`relative p-1 ${className}`}>
+        <div ref={ref} className={`relative p-1 ${className}`}>
             <div className="absolute inset-0 rounded-lg overflow-hidden">
                 <svg
                     width="100%"
                     height="100%"
-                    className={`absolute inset-0 ${borderColor}`}
+                    className={`absolute inset-0 ${adaptedBorderColor}`}
                     style={{ fill: 'none', strokeWidth: 3 }}
                 >
                     <motion.path
@@ -348,9 +700,7 @@ export const AnimatedBorder = memo(({
                         strokeLinecap="round"
                         strokeLinejoin="round"
                         initial={{ pathLength: 0, opacity: 0 }}
-                        whileInView={{ pathLength: 1, opacity: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ duration, ease: "easeInOut" }}
+                        animate={controls}
                         style={{ vectorEffect: 'non-scaling-stroke' }}
                     />
                 </svg>
@@ -362,77 +712,27 @@ export const AnimatedBorder = memo(({
     );
 });
 
-// Glitch text effect
-export const GlitchText = memo(({
-    text,
-    className = '',
-    glitchIntensity = 'medium',
-    ariaLabel
-}: GlitchTextProps) => {
-    const getGlitchDelay = () => {
-        switch (glitchIntensity) {
-            case 'low': return 8;
-            case 'high': return 3;
-            default: return 5;
-        }
-    };
-
-    return (
-        <div
-            className={`relative inline-block ${className}`}
-            role="text"
-            aria-label={ariaLabel || text}
-        >
-            <span className="relative z-10">{text}</span>
-            <motion.span
-                className="absolute top-0 left-0 text-destructive opacity-70 z-0 select-none"
-                animate={{
-                    x: [0, -2, 2, -1, 0],
-                    opacity: [0, 1, 0]
-                }}
-                transition={{
-                    repeat: Infinity,
-                    repeatDelay: getGlitchDelay(),
-                    duration: 0.2
-                }}
-                aria-hidden="true"
-            >
-                {text}
-            </motion.span>
-            <motion.span
-                className="absolute top-0 left-0 text-primary opacity-70 z-0 select-none"
-                animate={{
-                    x: [0, 2, -2, 1, 0],
-                    opacity: [0, 1, 0]
-                }}
-                transition={{
-                    repeat: Infinity,
-                    repeatDelay: getGlitchDelay(),
-                    duration: 0.2,
-                    delay: 0.05
-                }}
-                aria-hidden="true"
-            >
-                {text}
-            </motion.span>
-        </div>
-    );
-});
-
 // 3D card effect
 export const Card3D = memo(({
     children,
     className = '',
-    intensity = 10,
+    intensity = 8,
     perspective = 1000,
-    glare = false
+    glare = false,
+    transformOnHover = true
 }: Card3DProps) => {
+    const { theme } = useTheme();
     const cardRef = useRef<HTMLDivElement>(null);
     const [transform, setTransform] = useState('rotateX(0deg) rotateY(0deg)');
     const [glarePos, setGlarePos] = useState({ x: 50, y: 50, opacity: 0 });
 
+    // Adapt glare color based on theme
+    const adaptedGlareColor = theme === 'dark'
+        ? 'rgba(255, 255, 255, 0.2)'
+        : 'rgba(255, 255, 255, 0.4)';
+
     const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        if (!cardRef.current) return;
+        if (!cardRef.current || !transformOnHover) return;
 
         const card = cardRef.current;
         const rect = card.getBoundingClientRect();
@@ -457,7 +757,7 @@ export const Card3D = memo(({
                 opacity: 0.2
             });
         }
-    }, [intensity, glare]);
+    }, [intensity, glare, transformOnHover]);
 
     const handleMouseLeave = useCallback(() => {
         setTransform('rotateX(0deg) rotateY(0deg)');
@@ -483,8 +783,13 @@ export const Card3D = memo(({
                 }}
             >
                 {children}
-                {/* Highlight effect */}
-                <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr from-primary/5 via-transparent to-primary/10 dark:from-primary/10 dark:to-primary/20 z-10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+
+                {/* Theme-adaptive highlight effect */}
+                <div className="absolute inset-0 pointer-events-none bg-gradient-to-tr 
+                    from-primary/5 via-transparent to-primary/10 
+                    dark:from-primary/10 dark:to-primary/20 
+                    z-10 rounded-lg opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                />
 
                 {/* Glare effect */}
                 {glare && (
@@ -493,7 +798,7 @@ export const Card3D = memo(({
                         aria-hidden="true"
                     >
                         <div
-                            className="absolute -inset-40 bg-gradient-radial from-foreground/30 to-transparent dark:from-background/40 dark:to-transparent rounded-full"
+                            className="absolute -inset-40 bg-gradient-radial rounded-full"
                             style={{
                                 opacity: glarePos.opacity,
                                 top: `calc(${glarePos.y}% - 120px)`,
@@ -501,117 +806,13 @@ export const Card3D = memo(({
                                 width: '240px',
                                 height: '240px',
                                 filter: 'blur(25px)',
-                                transition: 'opacity 0.2s ease-out'
+                                transition: 'opacity 0.2s ease-out',
+                                background: `radial-gradient(circle, ${adaptedGlareColor} 0%, transparent 70%)`
                             }}
                         />
                     </div>
                 )}
             </motion.div>
-        </div>
-    );
-});
-
-// Particle explosion effect
-export const ParticleExplosion = memo(({
-    className = '',
-    particleCount = 20,
-    duration = 1,
-    size = 8,
-    colors = ['hsl(var(--primary))', 'hsl(var(--secondary))', 'hsl(var(--accent))', 'hsl(var(--chart-1))', 'hsl(var(--chart-2))'],
-    autoTrigger = false,
-    triggerDelay = 0,
-    buttonText = 'Click me!',
-    onExplode
-}: ParticleExplosionProps) => {
-    const [particles, setParticles] = useState<React.ReactNode[]>([]);
-    const [isExploding, setIsExploding] = useState(false);
-    const containerRef = useRef<HTMLDivElement>(null);
-
-    const triggerExplosion = useCallback(() => {
-        if (isExploding || !containerRef.current) return;
-
-        setIsExploding(true);
-
-        if (onExplode) {
-            onExplode();
-        }
-
-        const containerRect = containerRef.current.getBoundingClientRect();
-        const centerX = containerRect.width / 2;
-        const centerY = containerRect.height / 2;
-
-        const newParticles = Array.from({ length: particleCount }).map((_, i) => {
-            const angle = (i / particleCount) * 360;
-            const distance = Math.random() * 100 + 50;
-            const x = Math.cos(angle * (Math.PI / 180)) * distance;
-            const y = Math.sin(angle * (Math.PI / 180)) * distance;
-            const color = colors[Math.floor(Math.random() * colors.length)];
-            const particleSize = Math.random() * size + (size / 2);
-            const particleDuration = Math.random() * duration + (duration / 2);
-
-            return (
-                <motion.div
-                    key={i}
-                    initial={{ x: 0, y: 0, opacity: 0, scale: 0 }}
-                    animate={{
-                        x,
-                        y,
-                        opacity: [0, 1, 0],
-                        scale: [0, 1.5, 0.5]
-                    }}
-                    transition={{
-                        duration: particleDuration,
-                        ease: "easeOut"
-                    }}
-                    className="absolute"
-                    style={{
-                        width: `${particleSize}px`,
-                        height: `${particleSize}px`,
-                        borderRadius: '50%',
-                        backgroundColor: color,
-                        top: centerY,
-                        left: centerX,
-                        marginTop: `-${particleSize / 2}px`,
-                        marginLeft: `-${particleSize / 2}px`
-                    }}
-                />
-            );
-        });
-
-        setParticles(newParticles);
-
-        setTimeout(() => {
-            setParticles([]);
-            setIsExploding(false);
-        }, duration * 1200); // Slightly longer to ensure all particles complete
-    }, [isExploding, particleCount, colors, size, duration, onExplode]);
-
-    // Auto-trigger effect if enabled
-    useEffect(() => {
-        if (autoTrigger && !isExploding) {
-            const timer = setTimeout(() => {
-                triggerExplosion();
-            }, triggerDelay);
-
-            return () => clearTimeout(timer);
-        }
-    }, [autoTrigger, triggerDelay, isExploding, triggerExplosion]);
-
-    return (
-        <div
-            ref={containerRef}
-            className={`relative inline-block cursor-pointer ${className}`}
-            onClick={triggerExplosion}
-            role="button"
-            tabIndex={0}
-            onKeyDown={(e) => {
-                if (e.key === 'Enter' || e.key === ' ') {
-                    triggerExplosion();
-                }
-            }}
-        >
-            {particles}
-            <div className="relative z-10">{buttonText}</div>
         </div>
     );
 });
@@ -626,9 +827,15 @@ export const AnimatedGradientText = memo(({
     duration = 8,
     angle = 'to-r'
 }: AnimatedGradientTextProps) => {
+    const { theme } = useTheme();
+
+    // Adjust gradient colors for dark mode if needed
+    const adaptedFrom = theme === 'dark' && from === 'from-primary' ? 'from-primary-foreground' : from;
+    const adaptedTo = theme === 'dark' && to === 'to-accent' ? 'to-accent-foreground' : to;
+
     return (
         <motion.div
-            className={`bg-gradient-${angle} ${from} ${via} ${to} bg-clip-text text-transparent animate-gradient ${className}`}
+            className={`bg-gradient-${angle} ${adaptedFrom} ${via} ${adaptedTo} bg-clip-text text-transparent ${className}`}
             animate={{
                 backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
             }}
@@ -646,75 +853,17 @@ export const AnimatedGradientText = memo(({
     );
 });
 
-// Spotlight effect that follows mouse
-export const Spotlight = memo(({
-    children,
-    className = '',
-    size = 400,
-    color = 'hsla(var(--primary) / 0.15)',
-    intensity = 1
-}: SpotlightProps) => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const [opacity, setOpacity] = useState(0);
-    const containerRef = useRef<HTMLDivElement>(null);
+// Export a ready-to-use animations object for easier imports
+export const Animations = {
+    FloatingElement,
+    AnimatedText,
+    Reveal,
+    StaggerContainer,
+    FadeInWhenVisible,
+    CounterAnimation,
+    AnimatedBorder,
+    Card3D,
+    AnimatedGradientText
+};
 
-    const handleMouseMove = useCallback((e: React.MouseEvent<HTMLDivElement>) => {
-        if (!containerRef.current) return;
-
-        const rect = containerRef.current.getBoundingClientRect();
-        setPosition({
-            x: e.clientX - rect.left,
-            y: e.clientY - rect.top,
-        });
-        setOpacity(intensity);
-    }, [intensity]);
-
-    const handleMouseLeave = useCallback(() => {
-        setOpacity(0);
-    }, []);
-
-    return (
-        <div
-            ref={containerRef}
-            className={`relative overflow-hidden ${className}`}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-        >
-            <div className="relative z-10">
-                {children}
-            </div>
-            <div
-                className="pointer-events-none absolute -inset-px z-0 transition-opacity duration-300"
-                style={{
-                    opacity,
-                    background: `radial-gradient(circle ${size}px at ${position.x}px ${position.y}px, ${color}, transparent)`,
-                }}
-                aria-hidden="true"
-            ></div>
-        </div>
-    );
-});
-
-// Add to your tailwind.config.js file:
-/*
-module.exports = {
-  theme: {
-    extend: {
-      animation: {
-        'gradient': 'gradient 8s linear infinite',
-      },
-      keyframes: {
-        gradient: {
-          '0%': { backgroundPosition: '0% 50%' },
-          '50%': { backgroundPosition: '100% 50%' },
-          '100%': { backgroundPosition: '0% 50%' },
-        },
-      },
-      backgroundImage: {
-        'gradient-radial': 'radial-gradient(var(--tw-gradient-stops))',
-      },
-    },
-  },
-  // ...
-}
-*/
+export default Animations;
