@@ -19,7 +19,7 @@ const experiences: Experience[] = [
             "Optimized performance and improved load times by refining code logic",
             "Integrated APIs to manage and manipulate data between front-end and back-end"
         ],
-        technologies: ["React", "TypeScript", "API Integration", "Performance Optimization", "Responsive Design", "Data Manipulation", "API Integration", "Websockets"]
+        technologies: ["React", "TypeScript", "API Integration", "Performance Optimization", "Responsive Design", "Data Manipulation", "API Integration", "Websockets", "Teamwork", "Independent Work"]
     }
 ];
 
