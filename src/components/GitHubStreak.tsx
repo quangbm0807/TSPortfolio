@@ -28,7 +28,6 @@ const GitHubStreak = ({ username, className = '', onStreakLoaded }: GitHubStreak
         const calculateStreakFromContributions = (data: any) => {
             // First try to use real GitHub data if available
             if (data?.data?.user?.contributionsCollection?.contributionCalendar?.weeks) {
-                console.log("Using real GitHub data");
                 const weeks = data.data.user.contributionsCollection.contributionCalendar.weeks;
                 const totalContributions = data.data.user.contributionsCollection.contributionCalendar.totalContributions;
 
