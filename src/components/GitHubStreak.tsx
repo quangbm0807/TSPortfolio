@@ -28,7 +28,6 @@ const GitHubStreak = ({ username, className = '', onStreakLoaded }: GitHubStreak
         const calculateStreakFromContributions = (data: any) => {
             // First try to use real GitHub data if available
             if (data?.data?.user?.contributionsCollection?.contributionCalendar?.weeks) {
-                console.log("Using real GitHub data");
                 const weeks = data.data.user.contributionsCollection.contributionCalendar.weeks;
                 const totalContributions = data.data.user.contributionsCollection.contributionCalendar.totalContributions;
 
@@ -80,7 +79,6 @@ const GitHubStreak = ({ username, className = '', onStreakLoaded }: GitHubStreak
             }
 
             // Fallback to simulated data if real data isn't available or doesn't contain contribution info
-            console.log("Falling back to simulated data");
             const currentStreak = Math.floor(Math.random() * 14) + 1; // 1-14 days
             const longestStreak = Math.floor(Math.random() * 30) + 15; // 15-45 days
             const totalContributions = Math.floor(Math.random() * 500) + 200; // 200-700 contributions
@@ -109,11 +107,9 @@ const GitHubStreak = ({ username, className = '', onStreakLoaded }: GitHubStreak
                 let streakInfo;
 
                 try {
-                    console.log(`Fetching GitHub data for user: ${username}`);
                     const response = await fetch(`${baseUrl}/api/github-contributions?username=${username}`);
                     if (response.ok) {
                         contributionData = await response.json();
-                        console.log("GitHub API response received:", contributionData);
                     }
                 } catch (error) {
                     console.warn('Could not fetch GitHub contributions:', error);
@@ -121,7 +117,6 @@ const GitHubStreak = ({ username, className = '', onStreakLoaded }: GitHubStreak
 
                 // Calculate streak data
                 streakInfo = calculateStreakFromContributions(contributionData);
-                console.log("Calculated streak info:", streakInfo);
 
                 setStreakData(streakInfo);
 
