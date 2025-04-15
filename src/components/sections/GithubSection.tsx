@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion';
 import GitHubContributions from '../GitHubContributions';
+import GitHubStreak from '../GitHubStreak';
 
 export const GitHubSection = () => {
+    const username = 'quangbm0807';
+
     return (
         <section id="github" className="py-20 relative overflow-hidden">
             <div className="container mx-auto px-4">
@@ -25,6 +28,21 @@ export const GitHubSection = () => {
                         </p>
                     </div>
 
+                    {/* GitHub Streak Component */}
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        whileInView={{ opacity: 1, y: 0 }}
+                        viewport={{ once: true }}
+                        className="mb-8"
+                    >
+                        <GitHubStreak
+                            username={username}
+                        />
+                    </motion.div>
+
+
+
+                    {/* GitHub Contribution Graph */}
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         whileInView={{ opacity: 1, y: 0 }}
