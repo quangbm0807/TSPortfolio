@@ -107,11 +107,9 @@ const GitHubStreak = ({ username, className = '', onStreakLoaded }: GitHubStreak
                 let streakInfo;
 
                 try {
-                    console.log(`Fetching GitHub data for user: ${username}`);
                     const response = await fetch(`${baseUrl}/api/github-contributions?username=${username}`);
                     if (response.ok) {
                         contributionData = await response.json();
-                        console.log("GitHub API response received:", contributionData);
                     }
                 } catch (error) {
                     console.warn('Could not fetch GitHub contributions:', error);
