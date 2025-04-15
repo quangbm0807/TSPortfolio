@@ -79,7 +79,6 @@ const GitHubStreak = ({ username, className = '', onStreakLoaded }: GitHubStreak
             }
 
             // Fallback to simulated data if real data isn't available or doesn't contain contribution info
-            console.log("Falling back to simulated data");
             const currentStreak = Math.floor(Math.random() * 14) + 1; // 1-14 days
             const longestStreak = Math.floor(Math.random() * 30) + 15; // 15-45 days
             const totalContributions = Math.floor(Math.random() * 500) + 200; // 200-700 contributions
