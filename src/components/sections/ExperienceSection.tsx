@@ -13,7 +13,18 @@ const experiences: Experience[] = [
     {
         title: "Frontend Developer",
         company: "Metech Technology Co., Ltd.",
-        period: "08/2024 - Present",
+        period: "08/2024 - 04/2025",
+        description: [
+            "Built user interfaces with ReactJS, ensuring responsiveness and smooth user experience",
+            "Optimized performance and improved load times by refining code logic",
+            "Integrated APIs to manage and manipulate data between front-end and back-end"
+        ],
+        technologies: ["React", "TypeScript", "API Integration", "Performance Optimization", "Responsive Design", "Data Manipulation", "API Integration", "Websockets", "Teamwork", "Independent Work"]
+    },
+    {
+        title: "Fullstack Developer",
+        company: "NEWTECH DTP., CORP.",
+        period: "04/2025 - Present",
         description: [
             "Built user interfaces with ReactJS, ensuring responsiveness and smooth user experience",
             "Optimized performance and improved load times by refining code logic",
