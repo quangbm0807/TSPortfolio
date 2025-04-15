@@ -117,7 +117,6 @@ const GitHubStreak = ({ username, className = '', onStreakLoaded }: GitHubStreak
 
                 // Calculate streak data
                 streakInfo = calculateStreakFromContributions(contributionData);
-                console.log("Calculated streak info:", streakInfo);
 
                 setStreakData(streakInfo);
 
