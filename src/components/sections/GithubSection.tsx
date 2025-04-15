@@ -1,7 +1,10 @@
 import { motion } from 'framer-motion';
 import GitHubContributions from '../GitHubContributions';
+import GitHubStreak from '../GitHubStreak';
 
 export const GitHubSection = () => {
+    const username = 'quangbm0807';
+
     return (
         <section id="github" className="py-20 relative overflow-hidden">
             <div className="container mx-auto px-4">
