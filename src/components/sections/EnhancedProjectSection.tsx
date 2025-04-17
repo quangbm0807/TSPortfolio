@@ -53,8 +53,8 @@ const regularProjects: Project[] = [
         image: "/images/projects/weather.png",
         tech: ["React", "TypeScript", "Ant Design", "Axios"],
         github: "https://github.com/quangbm0807/weather-app",
-        demo: "https://github.com/pages/weather-app",
-        role: "Developer",
+        demo: "https://quangbm0807.github.io/Weather-App",
+        role: "Fullstack Developer",
         teamSize: "1"
     },
     {
