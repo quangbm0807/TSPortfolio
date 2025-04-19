@@ -81,7 +81,7 @@ export const AboutSection = () => {
                                 >
                                     Get in Touch
                                 </a>
-                                <ResumeDownload file="/resume.pdf" />
+                                <ResumeDownload file="/BuiMinhQuang-FullStackDeveloper-CV.pdf" />
                             </div>
                         </motion.div>
 
